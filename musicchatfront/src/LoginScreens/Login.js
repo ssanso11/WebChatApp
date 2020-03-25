@@ -1,17 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-export default class Login extends React.Component{
+import {
+    Redirect
+} from "react-router-dom";
+import { connect } from 'react-redux';
+import {getUser} from '../actions/userAction';
+
+class Login extends React.Component{
+    
     constructor(props) {
         super(props);
-        this.state = {
-            emailLogin: "", 
-            passwordLogin: "", 
-            emailRegister:"", 
-            passwordRegister: "", 
-            passwordConf: "", 
-            usernameRegister: ""
-        };
-    
+        this.state = this.getInitialState();
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,8 +21,20 @@ export default class Login extends React.Component{
         this.handleSubmitRegister = this.handleSubmitRegister.bind(this);
     }
 
+    getInitialState = () => ({
+        /* state props */
+        emailLogin: "", 
+        passwordLogin: "", 
+        emailRegister:"", 
+        passwordRegister: "", 
+        passwordConf: "", 
+        usernameRegister: "", 
+        isAuthenticated: false,
+    })
+
     handleSubmit(event) {
         event.preventDefault();
+        this.setState(this.getInitialState());
         const email = this.state.emailLogin 
         const password = this.state.passwordLogin;
         var data = {"logemail": email, "logpassword": password};
@@ -39,7 +50,12 @@ export default class Login extends React.Component{
             console.log(auth.userId)
             if(auth.userId != null)
             {
-                alert("Signed in as " + auth.username);
+                //alert("Signed in as " + auth.username);
+                //this.props.add({auth});
+                this.setState({
+                    isAuthenticated: true,
+                });
+
             }
         })
         .catch((error) => {
@@ -49,6 +65,7 @@ export default class Login extends React.Component{
     }
     handleSubmitRegister(event) {
         event.preventDefault();
+        this.setState(this.getInitialState());
         const email = this.state.emailRegister;
         const username = this.state.usernameRegister;
         const password = this.state.passwordRegister;
@@ -66,6 +83,9 @@ export default class Login extends React.Component{
             if(auth.userId != null)
             {
                 alert("Created user " + auth.username);
+                this.setState({
+                    isAuthenticated: true,
+                });
             }
         })
         .catch((error) => {
@@ -93,6 +113,9 @@ export default class Login extends React.Component{
     }
 
     render(){
+        if (this.state.isAuthenticated === true) {
+            return <Redirect to='/lessons' />
+        }
         return(
         <div className="App">
             <div>
@@ -135,3 +158,13 @@ export default class Login extends React.Component{
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        add: (user) => {
+            dispatch(getUser(user))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Login);

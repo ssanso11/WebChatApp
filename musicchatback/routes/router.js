@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/User");
 var cors = require("cors");
-
+var AccessToken = require('twilio').jwt.AccessToken;
+var VideoGrant = AccessToken.VideoGrant;
+var faker = require("faker");
 require('dotenv').config({ path: 'variables.env' });
 
 
@@ -12,6 +14,24 @@ router.get('/', function (req, res, next) {
     test:"Logged out rn",
   }
   return res.send(loggedOut);
+});
+router.get("/generatetoken", function(req, res, next) {
+  var identity = faker.name.findName();
+  var token = new AccessToken(
+    process.env.TWILIO_ACCOUNT_SID, 
+    process.env.TWILIO_API_KEY, 
+    process.env.TWILIO_API_SECRET,
+  );
+  const grant = new VideoGrant();
+  token.identity = identity;
+  token.addGrant(grant);
+
+
+  res.send({
+      identity: identity,
+      token: token.toJwt()
+  });
+  
 });
 router.post("/signup", function (req, res, next){
     if (req.body.password !== req.body.passwordConf) {
