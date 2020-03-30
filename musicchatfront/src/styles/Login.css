@@ -1,4 +1,4 @@
-.container {
+.containerLogin {
     display: flex;
     justify-content: space-evenly;
     position: relative;
@@ -31,7 +31,5 @@
     background-color: white;
     border-radius: 5px;
 }
-.emailLogin {
-    margin-right: 25px;
-}
+
 
