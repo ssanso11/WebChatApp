@@ -26,7 +26,7 @@ export default class App extends React.Component {
         <PersistGate loading = {null} persistor = {persistor}>
           <Router>
             <div value = "mainDiv">
-            <Navbar sticky="top" bg="light">
+            <Navbar sticky="top" bg="light" className="nav-bar">
               <Navbar.Brand href="/home">MusicChat</Navbar.Brand>
               <Navbar.Toggle aria-controls="first-navbar-nav" />
               <Navbar.Collapse id="first-navbar-nav">
