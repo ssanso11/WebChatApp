@@ -7,7 +7,16 @@ import {
 import { connect } from 'react-redux';
 import {getUser} from '../actions/userAction';
 import {TextField, Card, Button, CardActions, CardContent} from '@material-ui/core';
-import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import { 
+    Navbar, 
+    Nav, 
+    NavItem, 
+    NavDropdown, 
+    MenuItem, 
+    FormGroup, 
+    FormControl, 
+    FormLabel 
+} from "react-bootstrap";
 
 class Login extends React.Component{
     

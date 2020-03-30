@@ -11,6 +11,11 @@ import LessonsScreen from './VideoChatScreens/LessonsScreen';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import {persistor, store} from './configStore';
+import { 
+  Navbar, 
+  Nav, 
+  NavDropdown, 
+} from "react-bootstrap";
 
 //root class, all other classes are connected throught this class with react-router
 export default class App extends React.Component {
@@ -20,14 +25,23 @@ export default class App extends React.Component {
         <PersistGate loading = {null} persistor = {persistor}>
           <Router>
             <div value = "mainDiv">
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-              </ul>
+            <Navbar>
+              <Navbar.Brand href="/home">React-Bootstrap</Navbar.Brand>
+              <Navbar.Toggle aria-controls="first-navbar-nav" />
+              <Navbar.Collapse id="first-navbar-nav">
+                <Nav className = "mrAuto">
+                <Nav.Link href="/login">Login</Nav.Link>
+                <Nav.Link href="/lessons">Lessons</Nav.Link>
+                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">If</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">We</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Want</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+                </NavDropdown>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
               <hr />
 
               {/*
@@ -39,6 +53,9 @@ export default class App extends React.Component {
               */}
               <Switch>
                 <Route exact path="/">
+                  <LoginScreen />
+                </Route>
+                <Route exact path="/home">
                   <LoginScreen />
                 </Route>
                 <Route exact path="/login">
