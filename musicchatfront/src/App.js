@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import LoginScreen from './LoginScreens/Login.js';
+import InfoScreen from './HomeScreens/InfoScreen.js';
+import RegisterScreen from './LoginScreens/Register.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,12 +27,13 @@ export default class App extends React.Component {
         <PersistGate loading = {null} persistor = {persistor}>
           <Router>
             <div value = "mainDiv">
-            <Navbar>
-              <Navbar.Brand href="/home">React-Bootstrap</Navbar.Brand>
+            <Navbar sticky="top" bg="Spring-Wood" className="nav-bar">
+              <Navbar.Brand href="/home">MusicChat</Navbar.Brand>
               <Navbar.Toggle aria-controls="first-navbar-nav" />
               <Navbar.Collapse id="first-navbar-nav">
                 <Nav className = "mrAuto">
                 <Nav.Link href="/login">Login</Nav.Link>
+                <Nav.Link href="/register">Register</Nav.Link>
                 <Nav.Link href="/lessons">Lessons</Nav.Link>
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">If</NavDropdown.Item>
@@ -42,7 +45,6 @@ export default class App extends React.Component {
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
-              <hr />
 
               {/*
                 A <Switch> looks through all its children <Route>
@@ -53,13 +55,16 @@ export default class App extends React.Component {
               */}
               <Switch>
                 <Route exact path="/">
-                  <LoginScreen />
+                  <InfoScreen />
                 </Route>
                 <Route exact path="/home">
-                  <LoginScreen />
+                  <InfoScreen />
                 </Route>
                 <Route exact path="/login">
                   <LoginScreen />
+                </Route>
+                <Route exact path="/register">
+                  <RegisterScreen />
                 </Route>
                 <Route exact path="/lessons">
                   <LessonsScreen />

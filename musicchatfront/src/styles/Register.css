@@ -1,0 +1,33 @@
+.register-container {
+    height: 600px;
+    width: 100%;
+    position: relative;
+    align-content: center;
+    background-color: #F7F2EF;
+}
+.register-info {
+    justify-content: center;
+    text-align: center;
+    font-size: 400%;
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 300;
+}
+.card-container {
+    width: 50%;
+    height: 500px;
+    position: absolute;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.card-body {
+    background-color:white;
+}
+.card-register {
+    font-weight: 700;
+}
+.form-div {
+    display: inline;
+}
+.register-button {
+    color: white
+}

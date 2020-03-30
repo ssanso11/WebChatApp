@@ -8,11 +8,6 @@ import { connect } from 'react-redux';
 import {getUser} from '../actions/userAction';
 import {TextField, Card, Button, CardActions, CardContent} from '@material-ui/core';
 import { 
-    Navbar, 
-    Nav, 
-    NavItem, 
-    NavDropdown, 
-    MenuItem, 
     FormGroup, 
     FormControl, 
     FormLabel 
@@ -129,7 +124,7 @@ class Login extends React.Component{
             return <Redirect to='/lessons' />
         }
         return(
-        <div className="container">
+        <div className="containerLogin">
             <div className="login">
                 <h1>Login</h1>
                 <form className="login-form" onSubmit = {this.handleSubmit}>
@@ -151,7 +146,7 @@ class Login extends React.Component{
                 <form onSubmit = {this.handleSubmitRegister}>
                     <FormGroup>
                         <FormLabel>Username</FormLabel>
-                        <FormControl placeholder="name@example.com" />
+                        <FormControl placeholder="Username" />
                     </FormGroup>
                     <FormGroup>
                         <FormLabel>Email</FormLabel>
