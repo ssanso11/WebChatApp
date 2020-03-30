@@ -1,10 +1,13 @@
 import React from 'react';
+import '../styles/Login.css'
 import axios from 'axios';
 import {
     Redirect
 } from "react-router-dom";
 import { connect } from 'react-redux';
 import {getUser} from '../actions/userAction';
+import {TextField, Card, Button, CardActions, CardContent} from '@material-ui/core';
+import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
 class Login extends React.Component{
     
@@ -117,41 +120,45 @@ class Login extends React.Component{
             return <Redirect to='/lessons' />
         }
         return(
-        <div className="App">
-            <div>
+        <div className="container">
+            <div className="login">
                 <h1>Login</h1>
-                <form onSubmit = {this.handleSubmit}>
-                    <label>
-                        Email:
-                        <input type="text" value={this.state.emailLogin} onChange={this.handleEmail} />
-                    </label>
-                    <label>
-                        Password:
-                        <input type="text" value={this.state.passwordLogin} onChange={this.handlePassword} />
-                    </label>
-                    <input type="submit" value="Submit" />
+                <form className="login-form" onSubmit = {this.handleSubmit}>
+                    <FormGroup>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl type="email" placeholder="name@example.com" onChange={this.handleEmail} />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl type="password" placeholder="Password" onChange={this.handlePassword} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Button variant = "contained" color="primary" type="submit">Login</Button>
+                    </FormGroup>
                 </form>
             </div>
-            <div>
+            <div className="register">
                 <h1>Register</h1>
                 <form onSubmit = {this.handleSubmitRegister}>
-                    <label>
-                        Username:
-                        <input type="text" value={this.state.usernameRegister} onChange={this.handleUsername} />
-                    </label>
-                    <label>
-                        Email:
-                        <input type="text" value={this.state.emailRegister} onChange={this.handleEmailRegister} />
-                    </label>
-                    <label>
-                        Password:
-                        <input type="text" value={this.state.passwordRegister} onChange={this.handlePasswordRegister} />
-                    </label>
-                    <label>
-                        Confirm Password:
-                        <input type="text" value={this.state.passwordConf} onChange={this.handlePasswordConf} />
-                    </label>
-                    <input type="submit" value="Submit" />
+                    <FormGroup>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl placeholder="name@example.com" />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl type="email" placeholder="name@example.com" onChange={this.handleEmailRegister} />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl type="password" placeholder="Password" onChange={this.handlePasswordRegister} />
+                    </FormGroup>
+                    <FormGroup>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl type="password" placeholder="Confirm password" onChange={this.handlePasswordConf} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Button variant = "contained" color="primary" type="submit">Register</Button>
+                    </FormGroup>
                 </form>
             </div>
         </div>
