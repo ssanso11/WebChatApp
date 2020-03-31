@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import LoginScreen from './LoginScreens/Login.js';
 import InfoScreen from './HomeScreens/InfoScreen.js';
+import PrimaryDashboardScreen from './DashboardScreens/PrimaryDashboardScreen.js'
 import RegisterScreen from './LoginScreens/Register.js'
 import {
   BrowserRouter as Router,
@@ -67,7 +68,7 @@ export default class App extends React.Component {
                   <RegisterScreen />
                 </Route>
                 <Route exact path="/lessons">
-                  <LessonsScreen />
+                  <PrimaryDashboardScreen />
                 </Route>
               </Switch>
             </div>
