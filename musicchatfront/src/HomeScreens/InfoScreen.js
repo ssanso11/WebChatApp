@@ -11,7 +11,7 @@ export default class InfoScreen extends React.Component {
                 <div className="background-tutor-image"></div>
                 <div className="info-image-header">
                     <h1 className="info-title">MusicChat</h1>
-                    <p className="info-subtitle">Forget Zoom: make online music lessons easier</p>
+                    <p className="info-subtitle">Making online music lessons easier</p>
                 </div>
             </div>
         );

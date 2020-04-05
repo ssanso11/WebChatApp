@@ -12,6 +12,9 @@ import {
     FormControl, 
     FormLabel 
 } from "react-bootstrap";
+import {
+    BrowserRouter as Router,
+} from "react-router-dom";
 
 class Login extends React.Component{
     
@@ -53,12 +56,13 @@ class Login extends React.Component{
             withCredentials: "same-origin"
             //change the response so it sends json, then its working
         }).then((response) => {
+            console.log(response)
             var auth = response.data;
             console.log(auth.userId)
             if(auth.userId != null)
             {
-                //alert("Signed in as " + auth.username);
-                //this.props.add({auth});
+                alert("Signed in as " + auth.username);
+                this.props.add({auth});
                 this.setState({
                     isAuthenticated: true,
                 });
@@ -121,7 +125,11 @@ class Login extends React.Component{
 
     render(){
         if (this.state.isAuthenticated === true) {
-            return <Redirect to='/lessons' />
+            return (
+                <Router>
+                    <Redirect to='/' />
+                </Router>
+            );
         }
         return(
         <div className="containerLogin">
@@ -130,7 +138,7 @@ class Login extends React.Component{
                 <form className="login-form" onSubmit = {this.handleSubmit}>
                     <FormGroup>
                         <FormLabel>Email</FormLabel>
-                        <FormControl type="email" placeholder="name@example.com" onChange={this.handleEmail} />
+                        <FormControl  placeholder="name@example.com" onChange={this.handleEmail} />
                     </FormGroup>
                     <FormGroup>
                         <FormLabel>Password</FormLabel>

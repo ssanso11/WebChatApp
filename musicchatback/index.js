@@ -29,7 +29,7 @@ app.use(cors({
 app.use(cookieParser(process.env.SESSION_SECRET));
 
 
-console.log('===== Connecting to DB ... =====', process.env.MONGODB_URI);
+console.log('===== Connecting to DB ... =====', process.env.MONGODB_URL);
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGODB_URL, {
   useNewUrlParser: true,
 });
