@@ -1,12 +1,5 @@
 import React from 'react';
 import './App.css';
-<<<<<<< HEAD
-import LoggedInScreen from './HomeScreens/LoggedInScreen';
-import LoggedOutScreen from './HomeScreens/LoggedOutScreen'
-import { connect } from 'react-redux';
-import {logoutUser} from './actions/logoutAction'
-
-=======
 import LoginScreen from './LoginScreens/Login.js';
 import InfoScreen from './HomeScreens/InfoScreen.js';
 import PrimaryDashboardScreen from './DashboardScreens/PrimaryDashboardScreen.js'
@@ -26,42 +19,34 @@ import {
   Nav, 
   NavDropdown, 
 } from "react-bootstrap";
->>>>>>> cb12fdff6ff76b4cb8e5f15b88163a6584e282e1
 
 //root class, all other classes are connected throught this class with react-router
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.currentUser = this.currentUser.bind(this);
-  }
-  componentDidMount() {
-    this.currentUser()
-  }
-  currentUser = () => {
-    //change this soon
-    if (this.props.user == "not authenticated"){
-      console.log("ERROR, not authenticated");
-    }
-    else {
-      console.log(this.props.user) 
-    }
-  };
-
+export default class App extends React.Component {
   render() {
-    if(this.props.user != "not authenticated") {
-      
-      return (
-        <LoggedInScreen />
-      );
+    return (
+      <Provider store = {store} >
+        <PersistGate loading = {null} persistor = {persistor}>
+          <Router>
+            <div value = "mainDiv">
+            <Navbar sticky="top" bg="Spring-Wood" className="nav-bar">
+              <Navbar.Brand href="/home">MusicChat</Navbar.Brand>
+              <Navbar.Toggle aria-controls="first-navbar-nav" />
+              <Navbar.Collapse id="first-navbar-nav">
+                <Nav className = "mrAuto">
+                <Nav.Link href="/login">Login</Nav.Link>
+                <Nav.Link href="/register">Register</Nav.Link>
+                <Nav.Link href="/lessons">Lessons</Nav.Link>
+                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">If</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">We</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Want</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
+                </NavDropdown>
+                </Nav>
+              </Navbar.Collapse>
+            </Navbar>
 
-<<<<<<< HEAD
-    }
-    else {
-      return (
-        <LoggedOutScreen />
-      );
-    }
-=======
               {/*
                 A <Switch> looks through all its children <Route>
                 elements and renders the first one whose path
@@ -91,19 +76,6 @@ class App extends React.Component {
         </PersistGate>
       </Provider>
     );
->>>>>>> cb12fdff6ff76b4cb8e5f15b88163a6584e282e1
   }
 }
 
-const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user }
-};
-const mapDispatchToProps = dispatch => {
-  return {
-      logout: (user) => {
-          dispatch(logoutUser(user));
-      }
-  }
-};
-export default connect(mapStateToProps, mapDispatchToProps)(App);
