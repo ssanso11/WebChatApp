@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import {logoutUser} from '../actions/logoutAction'
 import PrimaryDashboard from '../DashboardScreens/PrimaryDashboardScreen.js'
 import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
+import MainCalendar from '../DashboardScreens/Calendar';
 
 // Be sure to include styles at some point, probably during your bootstraping
 
@@ -75,6 +76,10 @@ class LoggedInScreen extends React.Component {
                             <Icon name='gamepad' />
                             Join Lesson
                         </Menu.Item>
+                        <Menu.Item as={Link} to="/calendar">
+                            <Icon name='gamepad' />
+                            Calendar
+                        </Menu.Item>
                         <Menu.Item onClick={this.handleLogout}>
                             <Icon name='camera' />
                             Logout
@@ -94,6 +99,9 @@ class LoggedInScreen extends React.Component {
                             </Route>  
                             <Route exact path="/lessons">
                                 <LessonsScreen />
+                            </Route>
+                            <Route exact path="/calendar">
+                                <MainCalendar />
                             </Route>
                         </Switch>
                     </Sidebar.Pusher>
