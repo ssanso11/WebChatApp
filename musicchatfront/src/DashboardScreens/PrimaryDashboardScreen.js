@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Header, Icon, Image, Menu, Segment, Sidebar, Grid } from 'semantic-ui-react'
+import { Header, Icon, Image, Menu, Segment, Grid, Container } from 'semantic-ui-react'
 import '../styles/PrimaryDashboard.css'
 
 export class PrimaryDashboardScreen extends Component {
@@ -11,7 +11,7 @@ export class PrimaryDashboardScreen extends Component {
     render() {
         const { username, email, userId } = this.props.user.auth;
         return (
-            <div>
+            <Container>
                 <Grid columns='three' divided>
                     <Grid.Row>
                         <Grid.Column><h1>{username}</h1></Grid.Column>
@@ -29,7 +29,7 @@ export class PrimaryDashboardScreen extends Component {
                         <Grid.Column></Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </div>
+            </Container>
         )
     };
 };
