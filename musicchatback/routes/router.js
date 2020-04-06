@@ -16,6 +16,7 @@ router.get('/', function (req, res, next) {
   return res.send(loggedOut);
 });
 router.get("/generatetoken", function(req, res, next) {
+  //FAKER for testing
   var identity = faker.name.findName();
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID, 

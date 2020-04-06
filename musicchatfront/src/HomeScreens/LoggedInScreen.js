@@ -4,13 +4,9 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import { 
-    Navbar, 
-    Nav, 
-    NavDropdown, 
-} from "react-bootstrap";
 import {
-    Redirect
+    Redirect, 
+    Link
 } from "react-router-dom";
 import axios from 'axios';
 import LessonsScreen from '../VideoChatScreens/LessonsScreen';
@@ -18,6 +14,10 @@ import InfoScreen from './InfoScreen.js';
 import LoggedOutScreen from './LoggedOutScreen.js'
 import { connect } from 'react-redux';
 import {logoutUser} from '../actions/logoutAction'
+import PrimaryDashboard from '../DashboardScreens/PrimaryDashboardScreen.js'
+import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
+
+// Be sure to include styles at some point, probably during your bootstraping
 
 class LoggedInScreen extends React.Component {
     constructor(props) {
@@ -27,6 +27,7 @@ class LoggedInScreen extends React.Component {
             toLoggedOut: false,
         }
     }
+
     handleLogout = () => {
         //192.168.1.18 is the one at home, change for different wifis, eventually heroku
         axios.get("http://localhost:3001/logout", {
@@ -57,38 +58,45 @@ class LoggedInScreen extends React.Component {
         return (
             <Router>
                 <div value = "mainDiv">
-                    <Navbar sticky="top" bg="Spring-Wood" className="nav-bar">
-                    <Navbar.Brand href="/home">MusicChat</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="first-navbar-nav" />
-                    <Navbar.Collapse id="first-navbar-nav">
-                        <Nav className = "mrAuto">
-                        <Nav.Link href="/lessons">Dashboard</Nav.Link>
-                        <Nav.Link href="/lessons">Calender</Nav.Link>
-                        <Nav.Link href="#" onClick={this.handleLogout}>Logout</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">If</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">We</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Want</NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">Logout</NavDropdown.Item>
-                        </NavDropdown>
-                        </Nav>
-                    </Navbar.Collapse>
-                    </Navbar>
-                    <Switch>
-                        <Route exact path="/logout">
-                            <LoggedOutScreen />
-                        </Route>
-                        <Route exact path="/">
-                            <InfoScreen />
-                        </Route>
-                        <Route exact path="/home">
-                            <InfoScreen />
-                        </Route>  
-                        <Route exact path="/lessons">
-                            <LessonsScreen />
-                        </Route>
-                    </Switch>
+                    <Sidebar
+                        as={Menu}
+                        animation="push"
+                        icon='labeled'
+                        inverted
+                        vertical
+                        visible
+                        width='thin'
+                    >
+                        <Menu.Item as={Link} to="/dashboard">
+                            <Icon name='home' />
+                            Home
+                        </Menu.Item>
+                        <Menu.Item as={Link} to="/lessons">
+                            <Icon name='gamepad' />
+                            Join Lesson
+                        </Menu.Item>
+                        <Menu.Item onClick={this.handleLogout}>
+                            <Icon name='camera' />
+                            Logout
+                        </Menu.Item>
+                    </Sidebar>
+            
+                    <Sidebar.Pusher>
+                        <Switch>
+                            <Route exact path="/logout">
+                                <LoggedOutScreen />
+                            </Route>
+                            <Route exact path="/">
+                                <PrimaryDashboard />
+                            </Route>
+                            <Route exact path="/dashboard">
+                                <PrimaryDashboard />
+                            </Route>  
+                            <Route exact path="/lessons">
+                                <LessonsScreen />
+                            </Route>
+                        </Switch>
+                    </Sidebar.Pusher>
                 </div>
             </Router>
         );

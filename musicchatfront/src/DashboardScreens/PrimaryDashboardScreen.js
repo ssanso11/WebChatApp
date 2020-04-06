@@ -1,7 +1,7 @@
 import React from 'react'
 import '../styles/PrimaryDashboard.css'
 
-export default class InfoScreen extends React.Component {
+export default class PrimaryDashboard extends React.Component {
     constructor(props) {
         super(props);
     }
