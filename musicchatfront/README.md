@@ -10,7 +10,7 @@ To run, simply enter </br >
 
 followed by 
 
-###npm start
+### npm start
 
 This will open the react app on http://localhost:3000
 
