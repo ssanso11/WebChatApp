@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 const initialState = "not authenticated"
 
 const user = (state = initialState, action) => {
-  
   switch (action.type) {
     case 'ADD_USER':
       console.log(action.payload.auth)

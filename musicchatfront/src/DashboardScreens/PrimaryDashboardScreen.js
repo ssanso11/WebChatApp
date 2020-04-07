@@ -11,20 +11,20 @@ export class PrimaryDashboardScreen extends Component {
     render() {
         const { username, email, userId } = this.props.user.auth;
         return (
-            <Container>
+            <Container fluid>
                 <Grid columns='three' divided>
                     <Grid.Row>
-                        <Grid.Column><h1>{username}</h1></Grid.Column>
+                        <Grid.Column><h2>Username: {username}</h2></Grid.Column>
+                        <Grid.Column><h2>Email: {email}</h2></Grid.Column>
+                        <Grid.Column><h2>ID: {userId}</h2></Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column></Grid.Column>
                         <Grid.Column></Grid.Column>
                         <Grid.Column></Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column><h1>{email}</h1></Grid.Column>
                         <Grid.Column></Grid.Column>
-                        <Grid.Column></Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column><h1>{userId}</h1></Grid.Column>
                         <Grid.Column></Grid.Column>
                         <Grid.Column></Grid.Column>
                     </Grid.Row>

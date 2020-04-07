@@ -16,23 +16,32 @@ router.get('/', function (req, res, next) {
   return res.send(loggedOut);
 });
 router.get("/generatetoken", function(req, res, next) {
-  //FAKER for testing
-  var identity = faker.name.findName();
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID, 
     process.env.TWILIO_API_KEY, 
     process.env.TWILIO_API_SECRET,
   );
-  const grant = new VideoGrant();
-  token.identity = identity;
-  token.addGrant(grant);
-
-
-  res.send({
-      identity: identity,
-      token: token.toJwt()
-  });
-  
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+          if (user === null) {
+            var err = new Error('Not authorized! Go back!');
+            err.status = 400;
+            return next(err);
+          } else {
+              token.identity = user.username;
+              const grant = new VideoGrant();
+              token.addGrant(grant);
+            
+              res.send({
+                  identity: user.username,
+                  token: token.toJwt()
+              });
+          }
+      }
+    });
 });
 router.post("/signup", function (req, res, next){
     if (req.body.password !== req.body.passwordConf) {

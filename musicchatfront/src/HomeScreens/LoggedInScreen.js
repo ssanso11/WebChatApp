@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 import axios from 'axios';
 import LessonsScreen from '../VideoChatScreens/LessonsScreen';
-import InfoScreen from './InfoScreen.js';
 import LoggedOutScreen from './LoggedOutScreen.js'
 import { connect } from 'react-redux';
 import {logoutUser} from '../actions/logoutAction'

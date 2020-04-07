@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import {TextField, Card, Button} from '@material-ui/core';
 import Video from 'twilio-video';
+import { Button, Input, Icon, Card } from 'semantic-ui-react'
 
 
 export default class LessonScreens extends React.Component {
@@ -30,7 +30,9 @@ export default class LessonScreens extends React.Component {
     })
 
     componentDidMount() {
-        axios.get("http://localhost:3001/generatetoken").then(results => {
+        axios.get("http://localhost:3001/generatetoken", {
+            withCredentials: "same-origin"
+        }).then(results => {
             console.log(results.data.token)
             var id = results.data.identity;
             var tokenGet = results.data.token;
@@ -187,15 +189,15 @@ export default class LessonScreens extends React.Component {
             <div className="flex-item"><div ref="localMedia" /> </div>) : '';
 
         let joinOrLeaveRoomButton = this.state.hasJoinedRoom ? (
-        <Button variant = "contained" color="secondary" onClick={this.leaveRoom}>Leave Room</Button>) : (
-        <Button variant = "contained" color="primary" onClick={this.joinRoom}>Join Room</Button>);
+        <Button onClick={this.leaveRoom}>Leave Room</Button>) : (
+        <Button onClick={this.joinRoom}>Join Room</Button>);
 
         return(
             <Card>
                 <div>
                     {showLocalTrack}
                         <div>
-                            <TextField id = "room-text" label = "Room Name" onChange = {this.handleRoomNameChange}></TextField>
+                            <Input id = "room-text" onChange = {this.handleRoomNameChange}/>
                             <br></br>
                             {joinOrLeaveRoomButton}
                         </div>

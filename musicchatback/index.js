@@ -6,6 +6,7 @@ var MongoStore = require("connect-mongo")(session);
 var bodyParser = require('body-parser');
 var cors = require("cors");
 const cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 
 require('dotenv').config({ path: 'variables.env' });
 const app = express();
@@ -45,8 +46,8 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
     cookie: { 
-      maxAge:36000,
-      httpOnly:false,
+      maxAge: 999999999,
+      httpOnly: false,
       secure: false 
     },
     store: new MongoStore({
