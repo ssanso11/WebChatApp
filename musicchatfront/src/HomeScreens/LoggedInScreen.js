@@ -16,8 +16,23 @@ import {logoutUser} from '../actions/logoutAction'
 import PrimaryDashboard from '../DashboardScreens/PrimaryDashboardScreen.js'
 import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
 import MainCalendar from '../DashboardScreens/Calendar';
+import dummyImage from '../images/music-teacher.jpg';
+import LoggedIn from '../styles/LoggedIn.css'
 
 // Be sure to include styles at some point, probably during your bootstraping
+
+const SidebarLabel = ({active, name, onClick, redirect}) => {
+    return ( 
+        <Link to={redirect}>
+            <div onClick={onClick} className={active ? "label-active" : "label-inactive"} >
+                <h1 className={active ? "label-text-active" : "label-text-inactive"}>{name}</h1>
+            </div>
+        </Link>
+        
+    );
+}
+
+const labels = [{"key": 0, "name": "Home", "redirect": "/"}, {"key": 1, "name": "Lessons", "redirect": "/calendar"}, {"key": 2, "name": "Teachers", "redirect": "/lessons"}, {"key": 3, "name": "Discover", "redirect": "/"}]
 
 class LoggedInScreen extends React.Component {
     constructor(props) {
@@ -25,7 +40,9 @@ class LoggedInScreen extends React.Component {
 
         this.state = {
             toLoggedOut: false,
+            labelIsSelected: 0
         }
+        //this.handleSelect = this.handleSelect.bind(this);
     }
 
     handleLogout = () => {
@@ -47,6 +64,14 @@ class LoggedInScreen extends React.Component {
             console.error(error);
         });
     }
+
+    handleSelect = (key, redirect) => {
+        console.log(redirect)
+        this.setState({
+            labelIsSelected: key
+        })
+    }
+
     render() {
         if (this.state.toLoggedOut === true) {
             return (
@@ -66,23 +91,31 @@ class LoggedInScreen extends React.Component {
                         vertical
                         visible
                         width='thin'
+                        style={{"backgroundColor": "#6470FF"}}
                     >
-                        <Menu.Item as={Link} to="/dashboard">
-                            <Icon name='home' />
-                            Home
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/lessons">
-                            <Icon name='gamepad' />
-                            Join Lesson
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/calendar">
-                            <Icon name='gamepad' />
-                            Calendar
-                        </Menu.Item>
-                        <Menu.Item onClick={this.handleLogout}>
-                            <Icon name='camera' />
-                            Logout
-                        </Menu.Item>
+                        <Link to="/">
+                            <div className="sidebar-header" href="/">
+                                <div className="center-vert">
+                                    <img className="sidebar-profile-img" src={dummyImage}/>
+                                    <h1 className="sidebar-username">Test</h1>
+                                </div>
+                                
+                            </div>
+                        </Link>
+                        
+                        <hr className="header-divisor"/>
+                        <div className = "sidebar-actions">
+                            {labels.map(l=> (
+                                <SidebarLabel
+                                    key={l.key}
+                                    name={l.name}
+                                    active={l.key === this.state.labelIsSelected}
+                                    onClick={()=>this.handleSelect(l.key, l.redirect)}
+                                    redirect={l.redirect}
+                                />
+                            ))}
+                            
+                        </div>
                     </Sidebar>
             
                     <Sidebar.Pusher>
@@ -109,10 +142,14 @@ class LoggedInScreen extends React.Component {
         );
     }
 }
+
+
+
 const mapStateToProps = (state) => {
     const { user } = state;
     return { user }
 };
+
 const mapDispatchToProps = dispatch => {
     return {
         logout: (user) => {

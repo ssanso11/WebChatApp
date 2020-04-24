@@ -72,7 +72,8 @@ export default class LessonScreens extends React.Component {
         this.setState({
             hasJoinedRoom: true, 
             activeRoom: room, 
-            localMediaAvailable: true
+            localMediaAvailable: true,
+            sidebar: false,
         });
         // Attach LocalParticipant's tracks to the DOM, if not already attached.
         var previewContainer = this.refs.localMedia;

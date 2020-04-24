@@ -1,0 +1,66 @@
+.sidebar-header {
+    height: 10%;
+    position: relative;
+}
+.center-vert {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+}
+.sidebar-profile-img {
+    height: 30px; 
+    width: 30px;
+    float: left;
+    border-radius: 15px;
+    margin-left: 30px;
+}
+.sidebar-username {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: #FFFFFF;
+    font-weight: 500; 
+    font-size: 23px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont
+}
+.header-divisor {
+    background-color: #ffffff;
+    width: 70%
+}
+.label-text-active { 
+    color: #FFFFFF;
+    font-weight: 700; 
+    font-size: 18px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}
+.label-text-inactive { 
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 18px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont
+}
+.label-active {
+    background-color: #7E88FF;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    
+}
+.label-inactive {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+     
+}
