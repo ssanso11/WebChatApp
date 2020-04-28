@@ -16,8 +16,9 @@ import {logoutUser} from '../actions/logoutAction'
 import PrimaryDashboard from '../DashboardScreens/PrimaryDashboardScreen.js'
 import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
 import MainCalendar from '../DashboardScreens/Calendar';
+import HomeDashboard from '../DashboardScreens/HomeDashboard';
 import dummyImage from '../images/music-teacher.jpg';
-import LoggedIn from '../styles/LoggedIn.css'
+import '../styles/LoggedIn.css'
 
 // Be sure to include styles at some point, probably during your bootstraping
 
@@ -73,6 +74,7 @@ class LoggedInScreen extends React.Component {
     }
 
     render() {
+        const { username, email, userId } = this.props.user.auth;
         if (this.state.toLoggedOut === true) {
             return (
                 <Router>
@@ -90,14 +92,14 @@ class LoggedInScreen extends React.Component {
                         inverted
                         vertical
                         visible
-                        width='thin'
-                        style={{"backgroundColor": "#6470FF"}}
+                        width="big"
+                        style={{"backgroundColor": "#6470FF", "width": "250px"}}
                     >
                         <Link to="/">
                             <div className="sidebar-header" href="/">
                                 <div className="center-vert">
                                     <img className="sidebar-profile-img" src={dummyImage}/>
-                                    <h1 className="sidebar-username">Test</h1>
+                                    <h1 className="sidebar-username">{username}</h1>
                                 </div>
                                 
                             </div>
@@ -124,7 +126,7 @@ class LoggedInScreen extends React.Component {
                                 <LoggedOutScreen />
                             </Route>
                             <Route exact path="/">
-                                <PrimaryDashboard />
+                                <HomeDashboard />
                             </Route>
                             <Route exact path="/dashboard">
                                 <PrimaryDashboard />

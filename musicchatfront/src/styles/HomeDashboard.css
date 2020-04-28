@@ -1,0 +1,72 @@
+h1 {
+    font-weight: 700; 
+    font-size: 30px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont
+}
+.dashboard-main { 
+    padding-left: 25px;
+}
+.dashboard-header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40% 20%;
+    margin: 10px;
+}
+
+.schedule-button { 
+    position: absolute;
+    right: 300px;
+    background-color: #6470FF;
+    color: #FFFFFF;
+    border: none;
+    margin-top:5px;
+
+    /*margin-right: 300px; */
+    font-weight: 700; 
+    font-size: 16px;
+    border-radius: 5px;
+    height: 35px;
+    width: 200px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont
+}
+.teachers-grid {
+    display: grid;
+    margin: 2em 0;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+    grid-auto-rows: 300px;
+}
+.teacher-image {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+}
+.teacher-name {
+    margin-top: 7px;
+    margin-left: 15px;
+    font-weight: 400; 
+    font-size: 24px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}
+.view-homework-div {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.pieces-grid {
+    display: grid;
+    margin: 2em 0;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+    grid-auto-rows: 75px;
+}
+.piece-flex {
+    display: grid;
+    grid-template-columns: 30% 60%;
+    grid-gap: 1em;
+}
+.ui.card {
+    margin: 0
+}
