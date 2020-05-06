@@ -1,0 +1,15 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 45% 55%;
+}
+.intro-text {
+  margin: 0;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.form-container {
+  padding: 10px;
+}

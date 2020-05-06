@@ -15,6 +15,7 @@ const port = process.env.PORT || 3001;
 const whitelist = [process.env.ORIGIN, 'https://fierce-island-45554.herokuapp.com/']
 
  //change later possibly
+
 app.use(cors({
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {

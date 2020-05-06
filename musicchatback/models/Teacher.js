@@ -2,8 +2,14 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
 var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
-  username: {
+var teacherSchema = new Schema({
+  firstName: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  lastName: {
     type: String,
     required: true,
     unique: true,
@@ -21,8 +27,8 @@ var userSchema = new Schema({
     required: true,
   },
 });
-userSchema.statics.authenticate = function (email, password, callback) {
-  User.findOne({ email: email }).exec(function (err, user) {
+teacherSchema.statics.authenticate = function (email, password, callback) {
+  Teacher.findOne({ email: email }).exec(function (err, user) {
     if (err) {
       return callback(err);
     } else if (!user) {
@@ -39,7 +45,7 @@ userSchema.statics.authenticate = function (email, password, callback) {
     });
   });
 };
-userSchema.pre("save", function (next) {
+teacherSchema.pre("save", function (next) {
   var user = this;
   bcrypt.hash(user.password, 10, function (err, hash) {
     if (err) {
@@ -50,5 +56,5 @@ userSchema.pre("save", function (next) {
   });
 });
 
-var User = mongoose.model("User", userSchema, "users");
-module.exports = User;
+var Teacher = mongoose.model("teacher", teacherSchema, "teachers");
+module.exports = Teacher;

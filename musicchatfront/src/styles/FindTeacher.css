@@ -1,0 +1,27 @@
+.find-teacher-container {
+    height: 100vh;
+}
+.find-teacher-header {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+.search-bar {
+    margin-right: 400px;
+    margin-top: 10px;
+}
+.find-text {
+    font-weight: 700; 
+    font-size: 30px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont
+}
+.search-results-container {
+    margin-left: 50px;
+    margin-top: 30px; 
+}
+.teacher-results-grid {
+    display: grid;
+    margin: 2em 0;
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: 300px;
+}

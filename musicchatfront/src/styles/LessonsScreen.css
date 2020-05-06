@@ -1,0 +1,25 @@
+.join-lesson-container {
+    height: 100vh;
+}
+.flex-item {
+    height:90vh;
+    overflow: hidden;
+    margin: 0 auto;
+    margin-top: 5vh;
+    width: 90%;
+    border-radius: 10px;
+    position: relative;
+}
+.test {
+    width: 50%;
+}
+.hangup {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
+.remote-div {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+}

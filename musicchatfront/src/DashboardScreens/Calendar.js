@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import '../styles/Calendar.css';
 
 const localizer = momentLocalizer(moment);
 
@@ -129,10 +130,8 @@ export default class MainCalendar extends Component {
 
   render() {
     return (
-      <div>
-        <h1>
-          Here's Your Music Schedule
-        </h1>
+      <div className="calendar-container">
+        <h1>Here's Your Music Schedule</h1>
         <hr />
         <div style={{ height: '500px', width: '80%'}}>
           <Calendar

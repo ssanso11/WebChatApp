@@ -1,8 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import Video from 'twilio-video';
-import { Button, Input, Icon, Card } from 'semantic-ui-react'
-
+import { Button, Input, Icon, Card } from 'semantic-ui-react';
+import { Document, Page } from "react-pdf/dist/entry.webpack"; 
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import dummyMusic from '../images/dummy-pdf.pdf';
+import '../styles/LessonsScreen.css';
 
 export default class LessonScreens extends React.Component {
     constructor(props) {
@@ -80,7 +83,6 @@ export default class LessonScreens extends React.Component {
         if (!previewContainer.querySelector('video')) {
             this.attachTracks(this.getTracks(room.localParticipant), previewContainer);
         }
-
         //for users joining room
         // Attach the Tracks of the room's participants.
         const localParticipant = room.localParticipant;
@@ -130,7 +132,7 @@ export default class LessonScreens extends React.Component {
     participantConnected(participant) {
         console.log('Participant "%s" connected', participant.identity);
 
-        const div = document.createElement('div');
+        const div = document.createElement('participant-div');
         div.id = participant.sid;
         //div.innerText = participant.identity;
 
@@ -187,26 +189,42 @@ export default class LessonScreens extends React.Component {
 
     render() {
         let showLocalTrack = this.state.localMediaAvailable ? (
-            <div className="flex-item"><div ref="localMedia" /> </div>) : '';
+        <div className="flex-item">
+            <Button className="hangup" onClick={this.leaveRoom}>Leave Room</Button>
+            <div ref="localMedia" />
+            <div className="remote-div">
+                <div ref="remoteMedia">
+            </div>
+            </div>
+        </div>
+        ) : '';
 
         let joinOrLeaveRoomButton = this.state.hasJoinedRoom ? (
         <Button onClick={this.leaveRoom}>Leave Room</Button>) : (
         <Button onClick={this.joinRoom}>Join Room</Button>);
 
         return(
-            <Card>
+            <div className="join-lesson-container">
                 <div>
                     {showLocalTrack}
                         <div>
-                            <Input id = "room-text" onChange = {this.handleRoomNameChange}/>
-                            <br></br>
+                            <Input id="room-text" onChange = {this.handleRoomNameChange}/>
                             {joinOrLeaveRoomButton}
                         </div>
-                        <div ref="remoteMedia">
-
-                        </div>
+                        
                 </div>
-            </Card>
+                <div style={{ width: 600 }}>
+                    {/* eventually add draw feature so teacher can annotate music */}
+                    <Document
+                        file={dummyMusic}
+                        onLoadSuccess={this.onDocumentLoadSuccess}
+                    >
+                        <Page pageNumber={1} width={600} />
+                        <Page pageNumber={2} width={600} />
+                        <Page pageNumber={3} width={600} />
+                    </Document>
+                </div>
+            </div>
             
         );
     }

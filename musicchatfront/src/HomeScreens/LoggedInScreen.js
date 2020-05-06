@@ -17,6 +17,7 @@ import PrimaryDashboard from '../DashboardScreens/PrimaryDashboardScreen.js'
 import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
 import MainCalendar from '../DashboardScreens/Calendar';
 import HomeDashboard from '../DashboardScreens/HomeDashboard';
+import FindTeacher from '../DashboardScreens/FindTeacher'
 import dummyImage from '../images/music-teacher.jpg';
 import '../styles/LoggedIn.css'
 
@@ -33,7 +34,7 @@ const SidebarLabel = ({active, name, onClick, redirect}) => {
     );
 }
 
-const labels = [{"key": 0, "name": "Home", "redirect": "/"}, {"key": 1, "name": "Lessons", "redirect": "/calendar"}, {"key": 2, "name": "Teachers", "redirect": "/lessons"}, {"key": 3, "name": "Discover", "redirect": "/"}]
+const labels = [{"key": 0, "name": "Home", "redirect": "/"}, {"key": 1, "name": "Lessons", "redirect": "/calendar"}, {"key": 2, "name": "Teachers", "redirect": "/lessons"}, {"key": 3, "name": "Discover", "redirect": "/discover"}]
 
 class LoggedInScreen extends React.Component {
     constructor(props) {
@@ -84,17 +85,8 @@ class LoggedInScreen extends React.Component {
         }
         return (
             <Router>
-                <div value = "mainDiv">
-                    <Sidebar
-                        as={Menu}
-                        animation="push"
-                        icon='labeled'
-                        inverted
-                        vertical
-                        visible
-                        width="big"
-                        style={{"backgroundColor": "#6470FF", "width": "250px"}}
-                    >
+                <div className = "main-div">
+                    <div style={{"backgroundColor": "#6470FF", "width": "250px", "height": "100%"}}>
                         <Link to="/">
                             <div className="sidebar-header" href="/">
                                 <div className="center-vert">
@@ -116,11 +108,15 @@ class LoggedInScreen extends React.Component {
                                     redirect={l.redirect}
                                 />
                             ))}
-                            
+                            <Link to="/logout">
+                                <div onClick={this.handleLogout} className="logout-div" >
+                                    <h1 className="logout-header">Logout</h1>
+                                </div>
+                            </Link>
                         </div>
-                    </Sidebar>
+                    </div>
             
-                    <Sidebar.Pusher>
+                    
                         <Switch>
                             <Route exact path="/logout">
                                 <LoggedOutScreen />
@@ -137,8 +133,10 @@ class LoggedInScreen extends React.Component {
                             <Route exact path="/calendar">
                                 <MainCalendar />
                             </Route>
+                            <Route exact path="/discover">
+                                <FindTeacher />
+                            </Route>
                         </Switch>
-                    </Sidebar.Pusher>
                 </div>
             </Router>
         );

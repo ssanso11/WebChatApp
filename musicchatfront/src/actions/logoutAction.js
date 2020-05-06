@@ -1,3 +1,3 @@
-export const logoutUser = user => ({
-    type: "LOGOUT_USER",
+export const logoutUser = (user) => ({
+  type: "LOGOUT_USER",
 });
