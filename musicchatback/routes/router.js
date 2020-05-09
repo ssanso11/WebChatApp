@@ -56,6 +56,7 @@ router.post("/signup", function (req, res, next) {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
+      teachers: [],
     };
 
     User.create(userData, function (error, user) {
@@ -166,6 +167,63 @@ router.get("/home/teacher", function (req, res, next) {
           userId: req.session.userId,
         });
       }
+    }
+  });
+});
+router.get("/get/teachers", function (req, res, next) {
+  Teacher.find().exec(function (error, teachers) {
+    console.log(teachers);
+    if (error) {
+      return next(error);
+    } else {
+      res.send(teachers);
+    }
+  });
+});
+
+router.get("/get/teachers/:id", function (req, res, next) {
+  User.findById(req.params.id).exec(function (error, user) {
+    if (error) {
+      return next(error);
+    } else {
+      if (user === null) {
+        console.log("bruh");
+        //return res.json({"error": "Nah :("})
+        var err = new Error("Not authorized! Go back!");
+        err.status = 400;
+        return next(err);
+      } else {
+        console.log(user.teachers);
+        Teacher.find(
+          {
+            _id: {
+              $in: user.teachers,
+            },
+          },
+          function (error, teachers) {
+            console.log(teachers);
+            if (error) {
+              return next(error);
+            } else {
+              res.send(teachers);
+            }
+          }
+        );
+      }
+    }
+  });
+});
+
+router.post("/add/teachers", function (req, res, next) {
+  console.log(req.body.teacher_id);
+  User.update(
+    { _id: req.body.user_id },
+    { $push: { teachers: req.body.teacher_id } }
+  ).exec(function (error, user) {
+    if (error) {
+      return next(error);
+    } else {
+      res.send(user);
     }
   });
 });
