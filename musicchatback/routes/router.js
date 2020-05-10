@@ -181,37 +181,38 @@ router.get("/get/teachers", function (req, res, next) {
   });
 });
 
-router.get("/get/teachers/:id", function (req, res, next) {
-  User.findById(req.params.id).exec(function (error, user) {
-    if (error) {
-      return next(error);
-    } else {
-      if (user === null) {
-        console.log("bruh");
-        //return res.json({"error": "Nah :("})
-        var err = new Error("Not authorized! Go back!");
-        err.status = 400;
-        return next(err);
+router.post("/get/teachers/:id", function (req, res, next) {
+  Teacher.find(
+    {
+      _id: {
+        $in: req.body.teachers,
+      },
+    },
+    function (error, teachers) {
+      console.log(teachers);
+      if (error) {
+        return next(error);
       } else {
-        console.log(user.teachers);
-        Teacher.find(
-          {
-            _id: {
-              $in: user.teachers,
-            },
-          },
-          function (error, teachers) {
-            console.log(teachers);
-            if (error) {
-              return next(error);
-            } else {
-              res.send(teachers);
-            }
-          }
-        );
+        res.send(teachers);
       }
     }
-  });
+  );
+  // User.findById(req.params.id).exec(function (error, user) {
+  //   if (error) {
+  //     return next(error);
+  //   } else {
+  //     if (user === null) {
+  //       console.log("bruh");
+  //       //return res.json({"error": "Nah :("})
+  //       var err = new Error("Not authorized! Go back!");
+  //       err.status = 400;
+  //       return next(err);
+  //     } else {
+  //       console.log(user.teachers);
+
+  //     }
+  //   }
+  // });
 });
 
 router.post("/add/teachers", function (req, res, next) {
@@ -242,10 +243,11 @@ router.get("/home", function (req, res, next) {
         err.status = 400;
         return next(err);
       } else {
-        console.log("Auth!");
+        console.log(user);
         return res.json({
           username: user.username,
           email: user.email,
+          teachers: user.teachers,
           userId: req.session.userId,
         });
       }

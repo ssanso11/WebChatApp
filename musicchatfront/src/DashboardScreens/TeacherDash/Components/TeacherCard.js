@@ -18,6 +18,7 @@ export default ({
       <p className="teacher-name">{firstName + " " + lastName}</p>
     </div>
     <Button
+      disabled={false}
       onClick={() => addTeacher(_id)}
       size="medium"
       style={{

@@ -48,9 +48,13 @@ export class PrimaryDashboardScreen extends Component {
   }
 
   componentDidMount() {
+    var data = {
+      teachers: this.props.user.auth.teachers,
+    };
     axios
-      .get(
+      .post(
         `http://localhost:3001/get/teachers/${this.props.user.auth.userId}`,
+        data,
         {
           headers: {
             "Content-Type": "application/json",
@@ -71,6 +75,7 @@ export class PrimaryDashboardScreen extends Component {
   }
   render() {
     const { username, email, userId } = this.props.user.auth;
+
     return (
       <div className="dashboard-main">
         <div className="teachers-container">

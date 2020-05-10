@@ -5,12 +5,32 @@ import dummyImage from "../images/music-teacher.jpg";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/logoutAction";
 import TeacherCard from "./TeacherDash/Components/TeacherCard";
+import Lottie from "react-lottie";
+import loadingScreen from "../images/loading-animation.json";
 import axios from "axios";
+import { addTeacher } from "../actions/addTeacherAction";
+
+function LoadingMessage() {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: loadingScreen,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  return (
+    <div className="splash-screen">
+      <Lottie options={defaultOptions} height={400} width={400} />
+    </div>
+  );
+}
 
 class FindTeacher extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       teachers: [],
     };
   }
@@ -26,8 +46,18 @@ class FindTeacher extends React.Component {
       })
       .then((response) => {
         console.log(response.data);
+        console.log(this.props.user.auth.teachers);
+        var test = [];
+        for (var t of response.data) {
+          if (!this.props.user.auth.teachers.includes(t._id)) {
+            console.log("test" + t._id);
+            test.push(t);
+          }
+        }
+        console.log(test);
         this.setState({
-          teachers: response.data,
+          teachers: test,
+          loading: false,
         });
       })
       .catch((error) => {
@@ -50,12 +80,30 @@ class FindTeacher extends React.Component {
       })
       .then((response) => {
         console.log(response);
+        this.props.addTeacher(id);
       })
       .catch((error) => {
         console.error(error);
       });
   };
   render() {
+    const loadingIcon = this.state.loading ? (
+      LoadingMessage()
+    ) : (
+      <div className="search-results-container">
+        <p>24 Teachers matching your search results</p>
+        <div className="teacher-results-grid">
+          {this.state.teachers.map((teacher) => (
+            <TeacherCard
+              firstName={teacher.firstName}
+              lastName={teacher.lastName}
+              _id={teacher._id}
+              addTeacher={this.addTeacher}
+            />
+          ))}
+        </div>
+      </div>
+    );
     return (
       <div className="find-teacher-container">
         <div className="find-teacher-header">
@@ -84,19 +132,7 @@ class FindTeacher extends React.Component {
             </Input>
           </div>
         </div>
-        <div className="search-results-container">
-          <p>24 Teachers matching your search results</p>
-          <div className="teacher-results-grid">
-            {this.state.teachers.map((teacher) => (
-              <TeacherCard
-                firstName={teacher.firstName}
-                lastName={teacher.lastName}
-                _id={teacher._id}
-                addTeacher={this.addTeacher}
-              />
-            ))}
-          </div>
-        </div>
+        {loadingIcon}
       </div>
     );
   }
@@ -110,6 +146,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: (user) => {
       dispatch(logoutUser(user));
+    },
+    addTeacher: (user) => {
+      dispatch(addTeacher(user));
     },
   };
 };
