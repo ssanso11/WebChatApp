@@ -6,13 +6,11 @@ var teacherSchema = new Schema({
   firstName: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   lastName: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   email: {
@@ -20,6 +18,16 @@ var teacherSchema = new Schema({
     lowercase: true,
     required: true,
     unique: true,
+    trim: true,
+  },
+  instrument: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  bio: {
+    type: String,
+    required: true,
     trim: true,
   },
   password: {

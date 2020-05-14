@@ -1,10 +1,17 @@
 var express = require("express");
 var router = express.Router();
+const aws = require("aws-sdk");
 var User = require("../models/User");
 var Teacher = require("../models/Teacher");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 require("dotenv").config({ path: "variables.env" });
+
+const s3 = new aws.S3({
+  accessKeyId: process.env.AMAZON_ACCESS_KEY,
+  secretAccessKey: process.env.AMAZON_SECRET,
+  Bucket: "music-chat-pieces",
+});
 
 router.get("/", function (req, res, next) {
   var loggedOut = {
@@ -90,13 +97,17 @@ router.post("/register/teacher", function (req, res, next) {
     req.body.lastName &&
     req.body.email &&
     req.body.password &&
-    req.body.passwordConf
+    req.body.passwordConf &&
+    req.body.bio &&
+    req.body.instrument
   ) {
     var teacherData = {
       email: req.body.email,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       password: req.body.password,
+      bio: req.body.bio,
+      instrument: req.body.instrument,
     };
 
     Teacher.create(teacherData, function (error, user) {
