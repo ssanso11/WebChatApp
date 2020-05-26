@@ -3,84 +3,105 @@ const mongoose = require("mongoose");
 var routes = require("./routes/router");
 const session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
 var cors = require("cors");
-const cookieParser = require('cookie-parser');
-var cookieSession = require('cookie-session');
+const cookieParser = require("cookie-parser");
+var cookieSession = require("cookie-session");
 
-require('dotenv').config({ path: 'variables.env' });
+require("dotenv").config({ path: "variables.env" });
 const app = express();
 
 const port = process.env.PORT || 3001;
-const whitelist = [process.env.ORIGIN, 'https://fierce-island-45554.herokuapp.com/']
+const whitelist = [
+  process.env.ORIGIN,
+  "https://fierce-island-45554.herokuapp.com/",
+];
 
- //change later possibly
-
-app.use(cors({
-  origin: function(origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },//frontend server localhost:3000
-  methods:['GET','POST','PUT','DELETE'],
-  credentials: true // enable set cookie
-}));
+//change later possibly
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    }, //frontend server localhost:3000
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // enable set cookie
+  })
+);
 //app.options('*', cors());
 app.use(cookieParser(process.env.SESSION_SECRET));
 
-
-console.log('===== Connecting to DB ... =====', process.env.MONGODB_URL);
+console.log("===== Connecting to DB ... =====", process.env.MONGODB_URL);
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGODB_URL, {
   useNewUrlParser: true,
 });
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function () {
   // we're connected!
   console.log("Yayyy");
 });
 
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
-    cookie: { 
+    cookie: {
       maxAge: 999999999,
       httpOnly: false,
-      secure: false 
+      secure: false,
     },
     store: new MongoStore({
-      mongooseConnection: db
-    })
-}));
+      mongooseConnection: db,
+    }),
+  })
+);
 
-// app.use(function(req, res, next) {
-//   res.header('Access-Control-Allow-Credentials', "true");
-//   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-//   res.header("Access-Control-Allow-Origin", process.env.ORIGIN);
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-   Type, Accept, Authorization");
-//   next();
-// });
-  // parse incoming requests
+// parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-  
-  
-  // serve static files from template
+
+// serve static files from template
 
 app.use("/", routes);
 app.use(function (req, res, next) {
-    var err = new Error('File Not Found');
-    err.status = 404;
-    next(err);
-});
-  
-  // error handler
-  // define as the last app.use callback
-app.use(function (err, req, res, next) {
-    return res.send(err.message);
+  var err = new Error("File Not Found");
+  err.status = 404;
+  next(err);
 });
 
-app.listen(port, () => {console.log(`Listening on port ${port}...`)});
+// error handler
+// define as the last app.use callback
+app.use(function (err, req, res, next) {
+  return res.send(err.message);
+});
+
+var server = app.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
+var io = require("socket.io")(server);
+
+io.sockets.on("connection", function (socket) {
+  console.log("We have a new client: " + socket.id);
+  socket.on("mouseDown", function (data) {
+    console.log("Received: 'mouseDown' " + JSON.stringify(data));
+
+    socket.broadcast.emit("mouseDown", data);
+  });
+  socket.on("mouseMoved", function (data) {
+    console.log("Received: 'mouseMoved' " + JSON.stringify(data));
+
+    socket.broadcast.emit("mouseMoved", data);
+
+    // This is a way to send to everyone including sender
+    // io.sockets.emit('message', "this goes to everyone");
+  });
+
+  socket.on("disconnect", function () {
+    console.log("Client has disconnected");
+  });
+});

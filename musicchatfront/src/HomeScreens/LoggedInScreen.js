@@ -6,7 +6,6 @@ import LessonsScreen from "../VideoChatScreens/LessonsScreen";
 import LoggedOutScreen from "./LoggedOutScreen.js";
 import { connect } from "react-redux";
 import { logoutUser } from "../actions/logoutAction";
-import PrimaryDashboard from "../DashboardScreens/PrimaryDashboardScreen.js";
 import { Header, Icon, Image, Menu, Segment, Sidebar } from "semantic-ui-react";
 import MainCalendar from "../DashboardScreens/Calendar";
 import HomeDashboard from "../DashboardScreens/HomeDashboard";
@@ -96,7 +95,7 @@ class LoggedInScreen extends React.Component {
             style={{
               backgroundColor: "#6470FF",
               width: "250px",
-              height: "100%",
+              height: "100vh",
             }}
           >
             <Link to="/">
@@ -135,7 +134,7 @@ class LoggedInScreen extends React.Component {
               <HomeDashboard />
             </Route>
             <Route exact path="/dashboard">
-              <PrimaryDashboard />
+              <HomeDashboard />
             </Route>
             <Route exact path="/lessons">
               <LessonsScreen />

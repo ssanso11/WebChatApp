@@ -3,6 +3,10 @@ h1 {
   font-size: 30px;
   font-family: -apple-system, system-ui, BlinkMacSystemFont;
 }
+.ui.card {
+  margin: 0;
+}
+
 .dashboard-main {
   height: 100%;
   padding-left: 25px;
@@ -56,11 +60,15 @@ h1 {
   padding-bottom: 10px;
   text-align: center;
 }
+.piece-title {
+  font-size: 20px;
+  font-weight: 700;
+}
 .pieces-grid {
   display: grid;
   margin: 2em 0;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 1em;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2em;
   grid-auto-rows: 75px;
 }
 .piece-flex {
@@ -68,6 +76,47 @@ h1 {
   grid-template-columns: 30% 60%;
   grid-gap: 1em;
 }
-.ui.card {
-  margin: 0;
+.pieces-header {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40% 20%;
+  margin-top: 10px;
+}
+.pieces-button {
+  position: absolute;
+  right: 20px;
+  background-color: #6470ff;
+  color: #ffffff;
+  border: none;
+  margin-top: 5px;
+
+  /*margin-right: 300px; */
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 5px;
+  height: 35px;
+  width: 200px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}
+.add-piece-button {
+  background-color: #6470ff;
+  color: #ffffff;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 5px;
+  height: 35px;
+  width: 200px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}
+
+.ui.modal {
+  position: relative;
+  border-radius: 5px;
+  height: 80%;
+  text-align: center;
+}
+canvas {
+  width: 100% !important;
+  height: auto !important;
 }

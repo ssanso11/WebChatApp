@@ -1,16 +1,86 @@
 var express = require("express");
+var multer = require("multer");
 var router = express.Router();
 const aws = require("aws-sdk");
 var User = require("../models/User");
 var Teacher = require("../models/Teacher");
+var Piece = require("../models/Piece");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 require("dotenv").config({ path: "variables.env" });
+// Multer ships with storage engines DiskStorage and MemoryStorage
+// And Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
+const { v1: uuidv1 } = require("uuid");
 
 const s3 = new aws.S3({
   accessKeyId: process.env.AMAZON_ACCESS_KEY,
   secretAccessKey: process.env.AMAZON_SECRET,
-  Bucket: "music-chat-pieces",
+});
+
+router.post("/upload/piece", upload.single("file"), function (req, res, next) {
+  const file = req.file;
+  const params = {
+    Bucket: "music-chat-pieces",
+    Key: uuidv1() + ".pdf", // file will be saved as testBucket/contacts.csv
+    Body: file.buffer,
+    ContentType: file.mimetype,
+    ACL: "public-read",
+  };
+  s3.upload(params, function (s3Err, data) {
+    if (s3Err) {
+      throw s3Err;
+    } else {
+      console.log(`File uploaded successfully at ${data.Location}`);
+      res.send(data);
+    }
+  });
+});
+
+router.post("/upload/piece/mongo", function (req, res, next) {
+  if (
+    req.body.userId &&
+    req.body.title &&
+    req.body.pieceUrl &&
+    req.body.composer
+  ) {
+    pieceData = {
+      title: req.body.title,
+      piece: req.body.pieceUrl,
+      composer: req.body.composer,
+    };
+    totalData = {
+      user_id: req.body.userId,
+      data: pieceData,
+    };
+    let filter = { user_id: req.body.userId };
+    let options = { upsert: true, new: true, setDefaultsOnInsert: true };
+    let update = { $push: { data: pieceData } };
+    Piece.findOneAndUpdate(filter, update, options, function (error, piece) {
+      if (error) {
+        return next(error);
+      } else {
+        console.log(piece);
+        return res.send(piece);
+      }
+    });
+  } else {
+    var err = new Error("All fields required.");
+    err.status = 400;
+    return next(err);
+  }
+});
+
+router.get("/get/pieces/:id", function (req, res, next) {
+  Piece.findOne({ user_id: req.params.id }, function (error, pieces) {
+    if (error) {
+      return next(error);
+    } else {
+      console.log(pieces);
+      return res.send(pieces);
+    }
+  });
 });
 
 router.get("/", function (req, res, next) {
@@ -19,6 +89,7 @@ router.get("/", function (req, res, next) {
   };
   return res.send(loggedOut);
 });
+
 router.get("/generatetoken", function (req, res, next) {
   var token = new AccessToken(
     process.env.TWILIO_ACCOUNT_SID,
@@ -208,22 +279,6 @@ router.post("/get/teachers/:id", function (req, res, next) {
       }
     }
   );
-  // User.findById(req.params.id).exec(function (error, user) {
-  //   if (error) {
-  //     return next(error);
-  //   } else {
-  //     if (user === null) {
-  //       console.log("bruh");
-  //       //return res.json({"error": "Nah :("})
-  //       var err = new Error("Not authorized! Go back!");
-  //       err.status = 400;
-  //       return next(err);
-  //     } else {
-  //       console.log(user.teachers);
-
-  //     }
-  //   }
-  // });
 });
 
 router.post("/add/teachers", function (req, res, next) {

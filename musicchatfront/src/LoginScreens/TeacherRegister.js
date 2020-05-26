@@ -5,6 +5,8 @@ import { Spring, Trail } from "react-spring/renderprops";
 import { connect } from "react-redux";
 import { getTeacher } from "../actions/teacherAction";
 import { Redirect, BrowserRouter as Router, Link } from "react-router-dom";
+import TeacherStepOne from "./TeacherStepOne";
+import TeacherStepTwo from "./TeacherStepTwo";
 import "../styles/TeacherRegister.css";
 
 const headings = [
@@ -31,11 +33,32 @@ class TeacherRegister extends React.Component {
     email: "",
     password: "",
     passwordConf: "",
+    instrument: "",
+    bio: "",
     isAuthenticated: false,
+    step: 1,
   });
-
+  onNext = async () => {
+    this.setState({
+      step: 2,
+    });
+  };
+  onChangeInstrument = (e, { value }) => {
+    console.log(value);
+    this.setState({
+      instrument: value,
+    });
+  };
   onSubmit = async () => {
-    const { firstName, lastName, email, password, passwordConf } = this.state;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      passwordConf,
+      bio,
+      instrument,
+    } = this.state;
 
     var data = {
       firstName: firstName,
@@ -43,7 +66,10 @@ class TeacherRegister extends React.Component {
       email: email,
       password: password,
       passwordConf: passwordConf,
+      bio: bio,
+      instrument: instrument,
     };
+    console.log(data.instrument);
     axios
       .post("http://localhost:3001/register/teacher", data, {
         headers: {
@@ -80,6 +106,26 @@ class TeacherRegister extends React.Component {
         </Router>
       );
     }
+    const setupStep =
+      this.state.step === 1 ? (
+        <TeacherStepOne
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          email={this.state.email}
+          password={this.state.password}
+          passwordConf={this.state.passwordConf}
+          onNext={this.onNext}
+          onChange={this.onChange}
+        />
+      ) : (
+        <TeacherStepTwo
+          bio={this.state.bio}
+          instrument={this.state.instrument}
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
+          onChangeInstrument={this.onChangeInstrument}
+        />
+      );
     return (
       <div className="main-container">
         <div className="grid-container">
@@ -119,115 +165,7 @@ class TeacherRegister extends React.Component {
               </Trail>
             </div>
           </div>
-
-          <Spring
-            from={{ opacity: 0, marginTop: -1000 }}
-            to={{ opacity: 1, margin: 10 }}
-          >
-            {(props) => (
-              <div style={props} className="teacher-register-container">
-                <div className="left-container">
-                  <div
-                    className="form-container"
-                    style={{
-                      width: "90%",
-                      marginLeft: "30px",
-                      marginBottom: "30px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <h1
-                      style={{
-                        textAlign: "center",
-                        color: "#6470FF",
-                        marginTop: "10px",
-                        fontWeight: "bold",
-                        fontSize: "40px",
-                      }}
-                    >
-                      Register as a teacher
-                    </h1>
-                    <Form style={{ margin: "20px" }}>
-                      <Form.Group widths="equal">
-                        <Form.Field>
-                          <Form.Input
-                            label="First Name"
-                            name="firstName"
-                            value={this.state.firstName}
-                            onChange={this.onChange}
-                            placeholder="First Name"
-                          />
-                        </Form.Field>
-                        <Form.Field>
-                          <Form.Input
-                            label="Last Name"
-                            name="lastName"
-                            value={this.state.lastName}
-                            onChange={this.onChange}
-                            placeholder="Last Name"
-                          />
-                        </Form.Field>
-                      </Form.Group>
-                      <Form.Field>
-                        <Form.Input
-                          label="Email"
-                          type="email"
-                          name="email"
-                          value={this.state.email}
-                          onChange={this.onChange}
-                          placeholder="example@email.com"
-                        />
-                      </Form.Field>
-                      <Form.Field>
-                        <Form.Input
-                          label="Password"
-                          type="password"
-                          name="password"
-                          value={this.state.password}
-                          onChange={this.onChange}
-                          placeholder="Password"
-                        />
-                      </Form.Field>
-                      <Form.Field>
-                        <Form.Input
-                          label="Confirm Password"
-                          name="passwordConf"
-                          value={this.state.passwordConf}
-                          onChange={this.onChange}
-                          type="password"
-                          placeholder="Confirm"
-                        />
-                      </Form.Field>
-                      <Form.Field>
-                        <Checkbox label="I agree to the Terms and Conditions" />
-                      </Form.Field>
-                      <Button
-                        style={{
-                          color: "white",
-                          backgroundColor: "#6470FF",
-                          marginBottom: "10px",
-                        }}
-                        fluid
-                        type="submit"
-                        onClick={this.onSubmit}
-                      >
-                        Submit
-                      </Button>
-                      <Link
-                        to="/"
-                        style={{
-                          textAlign: "center",
-                          color: "#6470FF",
-                        }}
-                      >
-                        Not a Teacher? Go back
-                      </Link>
-                    </Form>
-                  </div>
-                </div>
-              </div>
-            )}
-          </Spring>
+          {setupStep}
         </div>
       </div>
     );

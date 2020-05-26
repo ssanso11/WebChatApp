@@ -79,7 +79,6 @@ class FindTeacher extends React.Component {
         //change the response so it sends json, then its working
       })
       .then((response) => {
-        console.log(response);
         this.props.addTeacher(id);
       })
       .catch((error) => {
@@ -97,6 +96,8 @@ class FindTeacher extends React.Component {
             <TeacherCard
               firstName={teacher.firstName}
               lastName={teacher.lastName}
+              bio={teacher.bio}
+              instrument={teacher.instrument}
               _id={teacher._id}
               addTeacher={this.addTeacher}
             />
@@ -109,13 +110,7 @@ class FindTeacher extends React.Component {
         <div className="find-teacher-header">
           <h1 className="find-text">Find a Teacher</h1>
           <div className="search-bar">
-            <Input
-              fluid
-              icon="search"
-              type="text"
-              placeholder="Search..."
-              action
-            >
+            <Input fluid type="text" placeholder="Search..." action>
               <input />
               <Select
                 options={instruments}

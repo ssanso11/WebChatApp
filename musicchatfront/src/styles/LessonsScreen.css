@@ -1,25 +1,66 @@
 .join-lesson-container {
-    height: 100vh;
+  height: 100vh;
 }
 .flex-item {
-    height:90vh;
-    overflow: hidden;
-    margin: 0 auto;
-    margin-top: 5vh;
-    width: 90%;
-    border-radius: 10px;
-    position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
 }
 .test {
-    width: 50%;
+  width: 50%;
 }
 .hangup {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
 }
 .remote-div {
-    position: absolute;
-    bottom: -5px;
-    right: -5px;
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+}
+
+.video-container {
+  width: 100%;
+  height: 100%;
+}
+.annotate {
+  width: 75px;
+  height: 75px;
+  background-color: #fffff1;
+}
+.button1 {
+  width: 75px;
+  height: 75px;
+  background-color: #6374f7;
+}
+.button2 {
+  width: 75px;
+  height: 75px;
+  background-color: #fffff1;
+}
+.person-top {
+  width: 100%;
+  height: 100vh;
+}
+.person-wide {
+  width: 100%;
+  height: 100%;
+}
+.buttons {
+  width: 225px;
+  position: fixed;
+  left: 50%;
+  bottom: 0px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+}
+.main-container {
+  background-color: black;
+}
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
