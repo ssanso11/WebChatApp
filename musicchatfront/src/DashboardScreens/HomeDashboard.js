@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Card, Modal, Form } from "semantic-ui-react";
@@ -6,15 +7,30 @@ import { FilePicker } from "react-file-picker-preview";
 import { Document, Page } from "react-pdf/dist/entry.webpack";
 import dummyImage from "../images/music-teacher.jpg";
 import ScheduleLesson from "./components/ScheduleLesson.js";
+import moment from "moment";
 import "../styles/HomeDashboard.css";
 
-const teacherCard = ({ instrument, image, firstName, lastName, lessons }) => (
+const teacherCard = ({
+  instrument,
+  image,
+  firstName,
+  lastName,
+  lessons,
+  _id,
+}) => (
   <Card style={{ textAlign: "center" }}>
     <h1 style={{ color: "#6470FF" }}>{instrument}</h1>
+
     <div className="card-profile" style={{ display: "flex", margin: "0 auto" }}>
-      <img src={dummyImage} className="teacher-image" />
-      <p className="teacher-name">{firstName + " " + lastName}</p>
+      <Link to={`/profile/${_id}`}>
+        <img src={dummyImage} className="teacher-card-image" />
+      </Link>
+
+      <Link to={`/profile/${_id}`}>
+        <p className="teacher-name">{firstName + " " + lastName}</p>
+      </Link>
     </div>
+
     <hr
       style={{
         width: "50%",
@@ -75,6 +91,11 @@ export class HomeDashboard extends Component {
       pageNumber: 1,
       showSchedule: false,
       numPages: 0,
+      startDate: new Date(),
+      endDate: new Date(),
+      teacherDropdownOptions: [],
+      selectedTeacherKey: "",
+      selectedteacherName: "",
     };
   }
 
@@ -96,8 +117,22 @@ export class HomeDashboard extends Component {
       )
       .then((response) => {
         console.log(response.data);
+        var arr = [];
+        response.data.forEach((teacher) => {
+          var tester = {
+            key: "",
+            value: "",
+            text: "",
+          };
+          tester.key = teacher._id;
+          tester.text = teacher.firstName;
+          tester.value = teacher.firstName;
+          arr.push(tester);
+        });
+
         this.setState({
           teachers: response.data,
+          teacherDropdownOptions: arr,
         });
       })
       .catch((error) => {
@@ -205,14 +240,61 @@ export class HomeDashboard extends Component {
     });
   };
   addLesson = () => {
-    console.log("hi");
+    var lessonData = {
+      title: `Lesson with ${this.state.selectedteacherName}`,
+      startTime: this.state.startDate,
+      endTime: this.state.endDate,
+      teacher_id: this.state.selectedTeacherKey,
+      student_id: this.props.user.auth.userId,
+    };
+    axios
+      .post("http://localhost:3001/upload/lesson", lessonData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: "same-origin",
+        //change the response so it sends json, then its working
+      })
+      .then((response) => {
+        //store res.location in array of pieces
+        var res = response;
+
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
   };
+  handleChangeDate = (date) => {
+    this.setState({
+      startDate: date,
+    });
+  };
+  handleSelectTeacher = (event, data) => {
+    const { value } = data;
+    const { key } = data.options.find((o) => o.value === value);
+    this.setState({
+      selectedTeacherKey: key,
+      selectedteacherName: data.value,
+    });
+  };
+  handleSelectDuration = (event, data) => {
+    const { value } = data;
+    const { key } = data.options.find((o) => o.value === value);
+
+    var endDate = moment(this.state.startDate).add(key, "m").toDate();
+    console.log(endDate);
+    this.setState({
+      endDate: endDate,
+    });
+  };
   render() {
     //const { username, email, userId } = this.props.user.auth;
     //const { file } = this.state.file;
+    console.log(this.state.teacherDropdownOptions);
     return (
       <div className="dashboard-main">
         <div className="teachers-container">
@@ -312,7 +394,11 @@ export class HomeDashboard extends Component {
           openSchedule={this.state.showSchedule}
           closeSchedule={this.closeSchedule}
           addLesson={this.addLesson}
-          teachers={this.state.teachers}
+          teachers={this.state.teacherDropdownOptions}
+          startDate={this.state.startDate}
+          handleChangeDate={this.handleChangeDate}
+          handleSelectTeacher={this.handleSelectTeacher}
+          handleSelectDuration={this.handleSelectDuration}
         />
       </div>
     );

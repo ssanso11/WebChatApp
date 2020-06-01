@@ -41,7 +41,7 @@ h1 {
   grid-gap: 1em;
   grid-auto-rows: 300px;
 }
-.teacher-image {
+.teacher-card-image {
   height: 50px;
   width: 50px;
   border-radius: 25px;

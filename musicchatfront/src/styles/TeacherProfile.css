@@ -1,0 +1,56 @@
+.teacher-profile-main {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-gap: 3em;
+  padding-left: 10px;
+}
+.basic-info-div {
+  display: flex;
+}
+.teacher-image {
+  width: 140px;
+  height: 140px;
+  border-radius: 70px;
+  margin: 20px;
+  object-fit: cover;
+}
+.name-instrument-header {
+  text-align: left;
+  margin-top: 20px;
+}
+.personal-info-bio {
+  font-size: 18px;
+}
+.personal-info-div {
+  margin-top: 30px;
+}
+.payment-header-div {
+  background-color: #f0f0f0;
+  height: 70px;
+  text-align: center;
+}
+.payment-body-div {
+  text-align: center;
+}
+.payment-info-div {
+  margin-top: 20px;
+}
+.payment-info-card {
+  height: 300px;
+}
+.payment-reassurance-text {
+  font-size: 20px;
+  font-weight: 700;
+  padding-top: 10px;
+}
+.contact-teacher-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #6374f7;
+  color: #ffffff;
+  width: 80%;
+  height: 50px;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 5px;
+}

@@ -2,22 +2,32 @@
 // {
 //     id: 0,
 //     title: 'All Day Event very long title',
-//     allDay: true,
 //     start: new Date(2015, 3, 0),
 //     end: new Date(2015, 3, 1),
 // },
 
-import React, { Component } from "react";
-import moment from "moment";
-import { Card, Modal, Form, Dropdown } from "semantic-ui-react";
+import React from "react";
+import { Modal, Form, Dropdown } from "semantic-ui-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-//const DropdownItems = ({ teacherName }) => <Dropdown.Item text={teacherName} />;
+const timeConfig = [
+  { key: 15, value: "15min", text: "15 min" },
+  { key: 20, value: "20min", text: "20 min" },
+  { key: 30, value: "30min", text: "30 min" },
+  { key: 45, value: "45min", text: "45 min" },
+  { key: 60, value: "60min", text: "1 hour" },
+];
 
 const ScheduleLesson = ({
   addLesson,
   openSchedule,
   closeSchedule,
   teachers,
+  startDate,
+  handleChangeDate,
+  handleSelectTeacher,
+  handleSelectDuration,
 }) => (
   <Modal
     className="schedule-lesson-modal"
@@ -25,32 +35,39 @@ const ScheduleLesson = ({
     onClose={closeSchedule}
   >
     <h1>Schedule</h1>
-    <Form style={{ margin: "20px" }}>
+    <Form>
+      <Form.Field>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => handleChangeDate(date)}
+          showTimeSelect
+          minDate={new Date()}
+          dateFormat="MMMM d, yyyy h:mm aa"
+          placeholderText="Click to select a date"
+        />
+      </Form.Field>
       <Form.Field>
         <Dropdown
-          label="Teacher"
-          name="teacher"
-          //   value={this.props.pieceTitle}
-          //   onChange={this.onChangeModalText}
-          placeholder="Teacher..."
+          placeholder="Select Duration"
+          search
           selection
-          options={teachers.firstName}
+          onChange={handleSelectDuration}
+          options={timeConfig}
         />
       </Form.Field>
       <Form.Field>
-        <Form.Input
-          label="Day"
-          name="day"
-          //   value={this.state.composer}
-          //   onChange={this.onChangeModalText}
-          placeholder="Day..."
+        <Dropdown
+          placeholder="Select Teacher"
+          search
+          selection
+          onChange={handleSelectTeacher}
+          options={teachers}
         />
       </Form.Field>
+      <button onClick={addLesson} className="schedule-lesson-button">
+        Submit
+      </button>
     </Form>
-
-    <button onClick={addLesson} className="schedule-lesson-button">
-      Submit
-    </button>
   </Modal>
 );
 export default ScheduleLesson;

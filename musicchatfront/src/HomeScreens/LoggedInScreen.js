@@ -12,6 +12,7 @@ import HomeDashboard from "../DashboardScreens/HomeDashboard";
 import FindTeacher from "../DashboardScreens/FindTeacher";
 import dummyImage from "../images/music-teacher.jpg";
 import withSplashScreen from "../splashscreens/withsplashScreen";
+import TeacherProfile from "../DashboardScreens/TeacherProfile.js";
 import "../styles/LoggedIn.css";
 
 // Be sure to include styles at some point, probably during your bootstraping
@@ -33,7 +34,7 @@ const SidebarLabel = ({ active, name, onClick, redirect }) => {
 
 const labels = [
   { key: 0, name: "Home", redirect: "/" },
-  { key: 1, name: "Lessons", redirect: "/calendar" },
+  { key: 1, name: "Schedule", redirect: "/calendar" },
   { key: 2, name: "Teachers", redirect: "/lessons" },
   { key: 3, name: "Discover", redirect: "/discover" },
 ];
@@ -145,6 +146,7 @@ class LoggedInScreen extends React.Component {
             <Route exact path="/discover">
               <FindTeacher />
             </Route>
+            <Route exact path="/profile/:id" component={TeacherProfile} />
           </Switch>
         </div>
       </Router>

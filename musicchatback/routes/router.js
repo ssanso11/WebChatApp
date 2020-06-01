@@ -5,6 +5,7 @@ const aws = require("aws-sdk");
 var User = require("../models/User");
 var Teacher = require("../models/Teacher");
 var Piece = require("../models/Piece");
+var Lesson = require("../models/Lesson");
 var AccessToken = require("twilio").jwt.AccessToken;
 var VideoGrant = AccessToken.VideoGrant;
 require("dotenv").config({ path: "variables.env" });
@@ -17,6 +18,49 @@ const { v1: uuidv1 } = require("uuid");
 const s3 = new aws.S3({
   accessKeyId: process.env.AMAZON_ACCESS_KEY,
   secretAccessKey: process.env.AMAZON_SECRET,
+});
+
+router.post("/upload/lesson", function (req, res, next) {
+  console.log(req.body);
+  if (
+    req.body.teacher_id &&
+    req.body.student_id &&
+    req.body.startTime &&
+    req.body.endTime &&
+    req.body.title
+  ) {
+    lessonData = {
+      teacher_id: req.body.teacher_id,
+      student_id: req.body.student_id,
+      start: req.body.startTime,
+      end: req.body.endTime,
+      title: req.body.title,
+    };
+
+    Lesson.create(lessonData, function (error, lesson) {
+      if (error) {
+        return next(error);
+      } else {
+        console.log(lesson);
+        return res.send(lesson);
+      }
+    });
+  } else {
+    var err = new Error("All fields required.");
+    err.status = 400;
+    return next(err);
+  }
+});
+
+router.get("/get/lessons/:id", function (req, res, next) {
+  Lesson.find({ student_id: req.params.id }, function (error, lessons) {
+    if (error) {
+      return next(error);
+    } else {
+      console.log(lessons);
+      return res.send(lessons);
+    }
+  });
 });
 
 router.post("/upload/piece", upload.single("file"), function (req, res, next) {
@@ -269,6 +313,21 @@ router.post("/get/teachers/:id", function (req, res, next) {
       _id: {
         $in: req.body.teachers,
       },
+    },
+    function (error, teachers) {
+      console.log(teachers);
+      if (error) {
+        return next(error);
+      } else {
+        res.send(teachers);
+      }
+    }
+  );
+});
+router.get("/get/teacher/:id", function (req, res, next) {
+  Teacher.findOne(
+    {
+      _id: req.params.id,
     },
     function (error, teachers) {
       console.log(teachers);
