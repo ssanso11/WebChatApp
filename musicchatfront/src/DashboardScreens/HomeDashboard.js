@@ -147,9 +147,11 @@ export class HomeDashboard extends Component {
       })
       .then((response) => {
         console.log(response.data);
-        this.setState({
-          pieces: response.data.data,
-        });
+        if (typeof response.data.data !== "undefined") {
+          this.setState({
+            pieces: response.data.data,
+          });
+        }
       })
       .catch((error) => {
         console.error(error);

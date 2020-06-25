@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 export default class TeacherStepOne extends React.Component {
   render() {
     return (
-      <div className="teacher-register-container">
+      <div
+        className="teacher-register-container"
+        style={{ backgroundColor: "white" }}
+      >
         <div className="left-container">
           <div
             className="form-container"
