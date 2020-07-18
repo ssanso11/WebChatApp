@@ -1,6 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 var routes = require("./routes/router");
+var fetchRouter = require("./routes/fetchRouter");
+var uploadRouter = require("./routes/uploadRouter");
+var addRouter = require("./routes/addRouter");
+var modifyRouter = require("./routes/modifyRouter");
 const session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
 var bodyParser = require("body-parser");
@@ -35,6 +39,10 @@ app.use(
 app.use(cookieParser(process.env.SESSION_SECRET));
 
 console.log("===== Connecting to DB ... =====", process.env.MONGODB_URL);
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGODB_URL, {
   useNewUrlParser: true,
 });
@@ -68,6 +76,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // serve static files from template
 
 app.use("/", routes);
+app.use("/get", fetchRouter);
+app.use("/upload", uploadRouter);
+app.use("/add", addRouter);
+app.use("/modify", modifyRouter);
+
 app.use(function (req, res, next) {
   var err = new Error("File Not Found");
   err.status = 404;

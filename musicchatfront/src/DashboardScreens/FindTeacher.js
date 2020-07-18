@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/FindTeacher.css";
+import "../styles/StudentStyles/FindTeacher.css";
 import { Button, Select, Input, Card } from "semantic-ui-react";
 import dummyImage from "../images/music-teacher.jpg";
 import { connect } from "react-redux";
@@ -67,11 +67,12 @@ class FindTeacher extends React.Component {
   addTeacher = (id) => {
     console.log(this.props.user.auth.userId);
     var data = {
-      user_id: this.props.user.auth.userId,
+      student_id: this.props.user.auth.userId,
       teacher_id: id,
+      status: "REQUEST",
     };
     axios
-      .post("http://localhost:3001/add/teachers", data, {
+      .post("http://localhost:3001/add/relationship", data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -79,7 +80,8 @@ class FindTeacher extends React.Component {
         //change the response so it sends json, then its working
       })
       .then((response) => {
-        this.props.addTeacher(id);
+        console.log(response);
+        //this.props.addTeacher(id);
       })
       .catch((error) => {
         console.error(error);

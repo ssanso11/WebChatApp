@@ -8,7 +8,6 @@ import {
   FormLabel,
 } from "react-bootstrap";
 import axios from "axios";
-import TeacherRegister from "./TeacherRegister";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../actions/userAction";
@@ -163,11 +162,7 @@ class RegisterScreen extends React.Component {
             </Card.Body>
           </Card>
         </div>
-        <Switch>
-          <Route exact path="/register/teacher">
-            <TeacherRegister />
-          </Route>
-        </Switch>
+        
       </Router>
     );
   }

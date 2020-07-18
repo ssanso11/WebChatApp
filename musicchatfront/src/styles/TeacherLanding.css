@@ -1,0 +1,41 @@
+.teacher-card-image {
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+}
+.teacher-name {
+  margin-top: 7px;
+  margin-left: 15px;
+  font-weight: 400;
+  font-size: 24px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}
+.view-homework-div {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.requests-grid {
+  display: grid;
+  margin: 2em 0;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1em;
+  grid-auto-rows: 300px;
+}
+.requests-button {
+  background-color: #6470ff;
+  color: #ffffff;
+  border: none;
+  margin: 0 auto;
+  margin-bottom: 15px;
+
+  /*margin-right: 300px; */
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 5px;
+  height: 35px;
+  width: 200px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}

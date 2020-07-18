@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Select, Input, Card } from "semantic-ui-react";
 import dummyImage from "../../../images/music-teacher.jpg";
-import "../../../styles/TeacherCard.scss";
+import "../../../styles/StudentStyles/TeacherCard.scss";
 
 export default ({
   instrument,

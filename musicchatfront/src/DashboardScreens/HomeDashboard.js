@@ -8,7 +8,7 @@ import { Document, Page } from "react-pdf/dist/entry.webpack";
 import dummyImage from "../images/music-teacher.jpg";
 import ScheduleLesson from "./components/ScheduleLesson.js";
 import moment from "moment";
-import "../styles/HomeDashboard.css";
+import "../styles/StudentStyles/HomeDashboard.css";
 
 const teacherCard = ({
   instrument,
@@ -296,6 +296,33 @@ export class HomeDashboard extends Component {
   render() {
     //const { username, email, userId } = this.props.user.auth;
     //const { file } = this.state.file;
+    const teacherMap =
+      this.state.teachers.length !== 0 ? (
+        <div className="teachers-grid">
+          {this.state.teachers.map(teacherCard)}
+        </div>
+      ) : (
+        <div>
+          <h1>No teachers</h1>
+        </div>
+      );
+    const pieceMap =
+      this.state.pieces.length !== 0 ? (
+        <div className="pieces-grid">
+          {this.state.pieces.map((p) => (
+            <PiecesCard
+              title={p.title}
+              composer={p.composer}
+              piece={p.piece}
+              showPdf={this.showPdf}
+            />
+          ))}
+        </div>
+      ) : (
+        <div>
+          <h4>No pieces yet. Add some to view!</h4>
+        </div>
+      );
     console.log(this.state.teacherDropdownOptions);
     return (
       <div className="dashboard-main">
@@ -306,9 +333,7 @@ export class HomeDashboard extends Component {
               Schedule a lesson
             </button>
           </div>
-          <div className="teachers-grid">
-            {this.state.teachers.map(teacherCard)}
-          </div>
+          {teacherMap}
         </div>
         <div className="pieces-container">
           <div className="pieces-header">
@@ -317,16 +342,7 @@ export class HomeDashboard extends Component {
               Add a piece
             </button>
           </div>
-          <div className="pieces-grid">
-            {this.state.pieces.map((p) => (
-              <PiecesCard
-                title={p.title}
-                composer={p.composer}
-                piece={p.piece}
-                showPdf={this.showPdf}
-              />
-            ))}
-          </div>
+          {pieceMap}
         </div>
         {/* put in component folder */}
         <Modal

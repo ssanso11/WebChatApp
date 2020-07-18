@@ -7,10 +7,10 @@ import LoggedOutScreen from "../../HomeScreens/LoggedOutScreen.js";
 import { connect } from "react-redux";
 import { logoutTeacher } from "../../actions/logoutTeacher";
 import { Header, Icon, Image, Menu, Segment, Sidebar } from "semantic-ui-react";
-import HomeDashboard from "../../DashboardScreens/HomeDashboard";
 import FindTeacher from "../../DashboardScreens/FindTeacher";
 import dummyImage from "../../images/music-teacher.jpg";
 import "../../styles/LoggedIn.css";
+import TeacherLanding from "./TeacherLanding.js";
 
 // Be sure to include styles at some point, probably during your bootstraping
 
@@ -130,7 +130,7 @@ class TeacherHome extends React.Component {
               <LoggedOutScreen />
             </Route>
             <Route exact path="/">
-              <FindTeacher />
+              <TeacherLanding />
             </Route>
             <Route exact path="/dashboard">
               <FindTeacher />

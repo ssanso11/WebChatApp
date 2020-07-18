@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import App from "../App";
+import { getTeacher } from "../actions/teacherAction";
 
 class Login extends React.Component {
   constructor(props) {
@@ -104,7 +104,34 @@ class Login extends React.Component {
         console.error(error);
       });
   }
-
+  handleTeacherSubmit = (event) => {
+    event.preventDefault();
+    this.setState(this.getInitialState());
+    const email = this.state.emailLogin;
+    const password = this.state.passwordLogin;
+    var data = { logemail: email, logpassword: password };
+    //fetch login
+    axios
+      .post("http://localhost:3001/login/teacher", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: "same-origin",
+        //change the response so it sends json, then its working
+      })
+      .then((response) => {
+        var auth = response.data;
+        if (auth.userId != null) {
+          this.props.addTeacher({ auth });
+          this.setState({
+            isAuthenticated: true,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   handleEmail(event) {
     this.setState({ emailLogin: event.target.value });
   }
@@ -157,6 +184,15 @@ class Login extends React.Component {
                 Login
               </Button>
             </FormGroup>
+            <FormGroup>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleTeacherSubmit}
+              >
+                Login Teacher
+              </Button>
+            </FormGroup>
           </form>
         </div>
         <div className="register">
@@ -206,6 +242,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     add: (user) => {
       dispatch(getUser(user));
+    },
+    addTeacher: (teacher) => {
+      dispatch(getTeacher(teacher));
     },
   };
 };

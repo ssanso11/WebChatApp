@@ -16,7 +16,7 @@ class LoggedOutScreen extends React.Component {
       displayNav: true,
     };
   }
-  componentWillMount() {
+  componentWillReceiveProps() {
     if (this.props.location.pathname === "/") {
       this.setState({
         displayNav: true,
@@ -78,8 +78,8 @@ class LoggedOutScreen extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  const { user } = state;
-  return { user };
+  const { user, teacher } = state;
+  return { user, teacher };
 };
 
 export default connect(mapStateToProps, null)(withRouter(LoggedOutScreen));
