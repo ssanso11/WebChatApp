@@ -20,6 +20,10 @@ var userSchema = new Schema({
     type: String,
     required: true,
   },
+  fcmToken: {
+    type: String,
+    required: true,
+  },
   teachers: [String],
 });
 userSchema.statics.authenticate = function (email, password, callback) {

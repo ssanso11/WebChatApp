@@ -11,6 +11,7 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 const cookieParser = require("cookie-parser");
 var cookieSession = require("cookie-session");
+var User = require("./models/User");
 
 require("dotenv").config({ path: "variables.env" });
 const app = express();
@@ -96,6 +97,9 @@ app.use(function (err, req, res, next) {
 var server = app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
+
+User.watch().on("change", (data) => console.log(new Date(), data));
+
 var io = require("socket.io")(server);
 
 io.sockets.on("connection", function (socket) {

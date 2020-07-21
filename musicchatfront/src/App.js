@@ -6,6 +6,7 @@ import TeacherHome from "./DashboardScreens/TeacherDash/TeacherHome.js";
 import { connect } from "react-redux";
 import { logoutUser } from "./actions/logoutAction";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import firebase from "./firebase";
 //root class, all other classes are connected throught this class with react-router
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +14,18 @@ class App extends React.Component {
     this.currentUser = this.currentUser.bind(this);
   }
   componentDidMount() {
+    const messaging = firebase.messaging();
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.getToken();
+      })
+      .then((token) => {
+        console.log("Token: " + token);
+      })
+      .catch(() => {
+        console.log("token error");
+      });
     this.currentUser();
   }
   currentUser = () => {

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 import { getUser } from "../actions/userAction";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import "../styles/Register.css";
+import firebase from "../firebase";
 
 class RegisterScreen extends React.Component {
   constructor(props) {
@@ -25,6 +26,24 @@ class RegisterScreen extends React.Component {
     this.handleSubmitRegister = this.handleSubmitRegister.bind(this);
   }
 
+  componentDidMount() {
+    const messaging = firebase.messaging();
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.getToken();
+      })
+      .then((token) => {
+        console.log("Token: " + token);
+        // this.setState({
+        //   fcmToken: token,
+        // });
+      })
+      .catch(() => {
+        console.log("token error");
+      });
+  }
+
   getInitialState = () => ({
     /* state props */
     emailLogin: "",
@@ -34,6 +53,7 @@ class RegisterScreen extends React.Component {
     passwordConf: "",
     usernameRegister: "",
     isAuthenticated: false,
+    //fcmToken: "",
   });
 
   handleSubmitRegister(event) {
@@ -43,11 +63,13 @@ class RegisterScreen extends React.Component {
     const username = this.state.usernameRegister;
     const password = this.state.passwordRegister;
     const passwordConf = this.state.passwordConf;
+    //const fcmToken = this.state.fcmToken;
     var data = {
       email: email,
       username: username,
       password: password,
       passwordConf: passwordConf,
+      //fcmToken: fcmToken,
     };
     console.log(data);
     axios
@@ -162,7 +184,6 @@ class RegisterScreen extends React.Component {
             </Card.Body>
           </Card>
         </div>
-        
       </Router>
     );
   }

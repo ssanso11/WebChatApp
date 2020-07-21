@@ -104,5 +104,21 @@ router.get("/teacher/:id/students", function (req, res, next) {
     }
   );
 });
+router.get("/student/:id/teachers", function (req, res, next) {
+  Relationship.find(
+    {
+      student_id: req.params.id,
+      status: "ACCEPTED",
+    },
+    function (error, relationships) {
+      console.log(relationships);
+      if (error) {
+        return next(error);
+      } else {
+        res.send(relationships);
+      }
+    }
+  );
+});
 
 module.exports = router;

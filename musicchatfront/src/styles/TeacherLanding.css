@@ -39,3 +39,18 @@
   width: 200px;
   font-family: -apple-system, system-ui, BlinkMacSystemFont;
 }
+.call-button {
+  background-color: #6470ff;
+  color: #ffffff;
+  border: none;
+  margin: 0 auto;
+  margin-bottom: 15px;
+
+  /*margin-right: 300px; */
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 5px;
+  height: 35px;
+  width: 200px;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont;
+}

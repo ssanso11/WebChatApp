@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "create-react-class": "^15.6.3",
+    "firebase": "^7.16.1",
     "immutable": "^4.0.0-rc.12",
     "moment": "^2.24.0",
     "node-sass": "^4.14.1",

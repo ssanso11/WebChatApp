@@ -34,6 +34,10 @@ var teacherSchema = new Schema({
     type: String,
     required: true,
   },
+  fcmToken: {
+    type: String,
+    required: true,
+  },
 });
 teacherSchema.statics.authenticate = function (email, password, callback) {
   Teacher.findOne({ email: email }).exec(function (err, user) {

@@ -8,6 +8,7 @@ import { Redirect, BrowserRouter as Router, Link } from "react-router-dom";
 import TeacherStepOne from "./TeacherStepOne";
 import TeacherStepTwo from "./TeacherStepTwo";
 import "../styles/TeacherRegister.css";
+import firebase from "../firebase";
 
 const headings = [
   {
@@ -26,6 +27,24 @@ class TeacherRegister extends React.Component {
     this.state = this.getInitialState();
   }
 
+  componentDidMount() {
+    const messaging = firebase.messaging();
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.getToken();
+      })
+      .then((token) => {
+        console.log("Token: " + token);
+        // this.setState({
+        //   fcmToken: token,
+        // });
+      })
+      .catch(() => {
+        console.log("token error");
+      });
+  }
+
   getInitialState = () => ({
     /* state props */
     firstName: "",
@@ -37,6 +56,7 @@ class TeacherRegister extends React.Component {
     bio: "",
     isAuthenticated: false,
     step: 1,
+    //fcmToken: "",
   });
   onNext = async () => {
     this.setState({
@@ -58,6 +78,7 @@ class TeacherRegister extends React.Component {
       passwordConf,
       bio,
       instrument,
+      //fcmToken,
     } = this.state;
 
     var data = {
@@ -68,6 +89,7 @@ class TeacherRegister extends React.Component {
       passwordConf: passwordConf,
       bio: bio,
       instrument: instrument,
+      //fcmToken: fcmToken,
     };
     console.log(data.instrument);
     axios
