@@ -22,7 +22,7 @@ router.get("/pieces/:id", function (req, res, next) {
     if (error) {
       return next(error);
     } else {
-      console.log(pieces);
+      //console.log(pieces);
       return res.send(pieces);
     }
   });
@@ -110,12 +110,35 @@ router.get("/student/:id/teachers", function (req, res, next) {
       student_id: req.params.id,
       status: "ACCEPTED",
     },
-    function (error, relationships) {
-      console.log(relationships);
+    async function (error, relationships) {
+      //console.log(relationships);
       if (error) {
         return next(error);
       } else {
-        res.send(relationships);
+        teacherArr = [];
+        console.log("realtionships " + relationships);
+        for (const relationship of relationships) {
+          //console.log(relationship);
+          //there has to be a better way, maybe using $in
+          teacherArr.push(
+            new Promise((resolve, reject) => {
+              Teacher.findOne(
+                {
+                  _id: relationship.teacher_id,
+                },
+                function (error, teacher) {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    resolve(teacher);
+                  }
+                }
+              );
+            })
+          );
+        }
+        console.log("teacher arr" + teacherArr);
+        res.send(await Promise.all(teacherArr));
       }
     }
   );

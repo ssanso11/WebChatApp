@@ -12,6 +12,8 @@ import "../styles/StudentStyles/HomeDashboard.css";
 import Video from "twilio-video";
 import Fullscreen from "react-full-screen";
 import { Spring, animated } from "react-spring/renderprops";
+import io from "socket.io-client";
+let socket;
 
 const IncomingCallDiv = ({
   // instrument,
@@ -157,9 +159,21 @@ export class HomeDashboard extends Component {
     var data = {
       teachers: this.props.user.auth.teachers,
     };
+    socket = io.connect("http://localhost:3001");
+    socket.emit("storeClientInfo", { userId: this.props.user.auth.userId });
+    socket.emit("subscribe/calls", { userId: this.props.user.auth.userId });
+    socket.on("subscribe/calls", (response) => {
+      var auth = response;
+      console.log("new call!!");
+      console.log(auth);
+      this.setState({
+        roomName: "" + auth._id,
+        incomingCallData: [auth],
+      });
+    });
     axios
-      .post(
-        `http://localhost:3001/get/teachers/${this.props.user.auth.userId}`,
+      .get(
+        `http://localhost:3001/get/student/${this.props.user.auth.userId}/teachers`,
         data,
         {
           headers: {
@@ -200,7 +214,6 @@ export class HomeDashboard extends Component {
         //change the response so it sends json, then its working
       })
       .then((response) => {
-        console.log(response.data);
         if (typeof response.data.data !== "undefined") {
           this.setState({
             pieces: response.data.data,
@@ -210,34 +223,12 @@ export class HomeDashboard extends Component {
       .catch((error) => {
         console.error(error);
       });
-    axios
-      .get(
-        `http://localhost:3001/calls/${this.props.user.auth.userId}/subscribe`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: "same-origin",
-        }
-      )
-      .then((response) => {
-        var auth = response.data;
-        console.log("new call!!");
-        console.log(auth);
-        this.setState({
-          roomName: "" + auth._id,
-          incomingCallData: [auth],
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
     axios
       .get("http://localhost:3001/generatetoken/student", {
         withCredentials: "same-origin",
       })
       .then((results) => {
-        console.log(results.data.token);
         var id = results.data.identity;
         var tokenGet = results.data.token;
         this.setState({ identity: id, token: tokenGet });
@@ -420,6 +411,10 @@ export class HomeDashboard extends Component {
       .then((response) => {
         var auth = response.data;
         console.log(auth);
+        this.setState({
+          roomName: "" + auth._id,
+        });
+        this.joinRoom();
       })
       .catch((error) => {
         console.error(error);
@@ -562,8 +557,6 @@ export class HomeDashboard extends Component {
     });
   };
   render() {
-    console.log("data");
-    console.log(this.state.incomingCallData);
     //const { username, email, userId } = this.props.user.auth;
     //const { file } = this.state.file;
     const teacherMap =
@@ -604,7 +597,6 @@ export class HomeDashboard extends Component {
           <h4>No pieces yet. Add some to view!</h4>
         </div>
       );
-    console.log(this.state.teacherDropdownOptions);
     const personTop = this.state.participants ? (
       <div className="person-top" ref={this.participantDiv} />
     ) : (

@@ -287,26 +287,4 @@ router.get("/logout", function (req, res, next) {
   }
 });
 
-router.get("/calls/:userId/subscribe", function (req, res, next) {
-  console.log("change stream started");
-  //pipeline to filter data
-  const pipeline = [{ $match: { "fullDocument.to_id": req.params.userId } }];
-  Call.watch(pipeline).on("change", (data) =>
-    //somehow we have to push data to "to_id"
-    res.send(data.fullDocument)
-  );
-});
-
-// function startPolling(req, res, userId) {
-//   console.log("change stream started");
-//   //pipeline to filter data
-//   const pipeline = [{ $match: { "fullDocument.from_id": userId } }];
-//   Call.watch(pipeline).on("change", (data) =>
-//     //somehow we have to push data to "to_id"
-//     res.send({
-//       message: "New call!",
-//     })
-//   );
-// }
-
 module.exports = router;

@@ -8,6 +8,8 @@ import { Card } from "semantic-ui-react";
 import Fullscreen from "react-full-screen";
 import Video from "twilio-video";
 import { Spring, animated } from "react-spring/renderprops";
+import io from "socket.io-client";
+let socket;
 
 const RequestCard = ({
   // instrument,
@@ -351,6 +353,18 @@ class TeacherLanding extends React.Component {
 
   componentDidMount() {
     const { firstName, lastName, email, userId } = this.props.teacher.auth;
+    socket = io.connect("http://localhost:3001");
+    socket.emit("storeClientInfo", { userId: userId });
+    socket.emit("subscribe/calls", { userId: userId });
+    socket.on("subscribe/calls", (response) => {
+      var auth = response;
+      console.log("new call!!");
+      console.log(auth);
+      this.setState({
+        roomName: "" + auth._id,
+        incomingCallData: [auth],
+      });
+    });
     axios
       .get(`http://localhost:3001/get/teacher/${userId}/requests`, {
         headers: {
@@ -385,28 +399,7 @@ class TeacherLanding extends React.Component {
       .catch((error) => {
         console.error(error);
       });
-    axios
-      .get(
-        `http://localhost:3001/calls/${this.props.teacher.auth.userId}/subscribe`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: "same-origin",
-        }
-      )
-      .then((response) => {
-        var auth = response.data;
-        console.log("new call!!");
-        console.log(auth);
-        this.setState({
-          roomName: "" + auth._id,
-          incomingCallData: auth,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
     axios
       .get("http://localhost:3001/generatetoken/teacher", {
         withCredentials: "same-origin",
@@ -509,6 +502,7 @@ class TeacherLanding extends React.Component {
         <Fullscreen enabled={this.state.hasJoinedRoom}>
           <div className="video-container">{showLocalTrack}</div>
         </Fullscreen>
+        {callPopup}
         <h1>Welcome Back, {firstName}</h1>
         <div className="incoming-requests-container">
           <div className="incoming-requests-header">

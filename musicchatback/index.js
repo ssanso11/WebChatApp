@@ -11,7 +11,7 @@ var bodyParser = require("body-parser");
 var cors = require("cors");
 const cookieParser = require("cookie-parser");
 var cookieSession = require("cookie-session");
-var User = require("./models/User");
+var Call = require("./models/Call");
 
 require("dotenv").config({ path: "variables.env" });
 const app = express();
@@ -98,12 +98,34 @@ var server = app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
 });
 
-User.watch().on("change", (data) => console.log(new Date(), data));
-
 var io = require("socket.io")(server);
-
+//will an array be good for this??
+clients = [];
 io.sockets.on("connection", function (socket) {
   console.log("We have a new client: " + socket.id);
+  socket.on("storeClientInfo", function (socketData) {
+    //store userId and respective socket.id to array
+    console.log(socketData.userId);
+    var clientInfo = new Object();
+    clientInfo.userId = socketData.userId;
+    clientInfo.socketId = socket.id;
+    clients.push(clientInfo);
+  });
+  socket.on("subscribe/calls", function (socketData) {
+    console.log("change stream started");
+    //pipeline to filter data
+    const pipeline = [{ $match: { "fullDocument.to_id": socketData.userId } }];
+    Call.watch(pipeline).on("change", (data) => {
+      //somehow we have to push data to "to_id"
+      console.log("new call for a user...");
+      for (var i in clients) {
+        if (clients[i].userId == socketData.userId) {
+          console.log(clients[i].socketId);
+          io.to(clients[i].socketId).emit("subscribe/calls", data.fullDocument);
+        }
+      }
+    });
+  });
   socket.on("mouseDown", function (data) {
     console.log("Received: 'mouseDown' " + JSON.stringify(data));
 
@@ -118,7 +140,13 @@ io.sockets.on("connection", function (socket) {
     // io.sockets.emit('message', "this goes to everyone");
   });
 
-  socket.on("disconnect", function () {
-    console.log("Client has disconnected");
+  socket.on("disconnect", function (data) {
+    for (var i = 0, len = clients.length; i < len; ++i) {
+      var c = clients[i];
+      if (c.userId == socket.id) {
+        clients.splice(i, 1);
+        break;
+      }
+    }
   });
 });
