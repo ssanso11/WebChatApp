@@ -33,7 +33,7 @@
     "node-pushnotifications": "^1.2.0",
     "nodemon": "^1.19.4",
     "pusher": "^3.0.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "twilio": "^3.41.1",
     "uuid": "^8.0.0"
   }
