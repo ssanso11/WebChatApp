@@ -1,6 +1,6 @@
 ## MusicChat Front-end 
 
-The front-end of this web applicatiob was made with React.js
+The front-end of this web application was made with React.js
 
 ## Running
 
